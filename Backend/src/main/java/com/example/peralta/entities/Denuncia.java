@@ -4,6 +4,8 @@ package com.example.peralta.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="denuncia")
@@ -26,7 +28,8 @@ public class Denuncia {
     @Column(name = "den_data")
     private LocalDate data;
 
-
+    @OneToMany(mappedBy = "denuncia", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Foto> fotos = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -66,5 +69,41 @@ public class Denuncia {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public List<Foto> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Foto> fotos) {
+        this.fotos = fotos;
+    }
+
+    public void addFoto(Foto foto) {
+        this.fotos.add(foto);
+    }
+
+    public void removeFoto(String arquivo) {
+        Foto foto = new Foto();
+        boolean remove = false;
+        for (int i = 0; i < this.fotos.size() && !remove; i++) {
+            foto = this.fotos.get(i);
+            if(foto.getArquivo().equals(arquivo)) {
+                this.fotos.remove(foto);
+                remove = true;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Denuncia{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", texto='" + texto + '\'' +
+                ", urgencia=" + urgencia +
+                ", data=" + data +
+                ", fotos=" + fotos +
+                '}';
     }
 }

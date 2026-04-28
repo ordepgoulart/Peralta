@@ -2,7 +2,7 @@ package com.example.peralta.entities;
 
 import jakarta.persistence.*;
 
-@Id
+@Entity
 @Table(name = "usuario")
 public class Usuario {
 
