@@ -5,7 +5,7 @@
 -- Dumped from database version 16.6
 -- Dumped by pg_dump version 16.6
 
--- Started on 2026-04-28 12:01:20
+-- Started on 2026-05-05 11:52:37
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -24,12 +24,12 @@ SET default_table_access_method = heap;
 
 --
 -- TOC entry 215 (class 1259 OID 16399)
--- Name: denuncia; Type: TABLE; Schema: public; Owner: postgres
+-- Name: denuncias; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.denuncia (
+CREATE TABLE public.denuncias (
     den_id integer NOT NULL,
-    den_titulo character varying(40),
+    den_titulo character varying,
     den_texto text,
     den_urgencia numeric(1,0),
     org_id integer,
@@ -39,7 +39,7 @@ CREATE TABLE public.denuncia (
 );
 
 
-ALTER TABLE public.denuncia OWNER TO postgres;
+ALTER TABLE public.denuncias OWNER TO postgres;
 
 --
 -- TOC entry 216 (class 1259 OID 16404)
@@ -63,25 +63,25 @@ ALTER SEQUENCE public.denuncia_den_id_seq OWNER TO postgres;
 -- Name: denuncia_den_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.denuncia_den_id_seq OWNED BY public.denuncia.den_id;
+ALTER SEQUENCE public.denuncia_den_id_seq OWNED BY public.denuncias.den_id;
 
 
 --
--- TOC entry 218 (class 1259 OID 16410)
--- Name: feedback; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 217 (class 1259 OID 16405)
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.feedback (
+CREATE TABLE public.feedbacks (
     fee_id integer NOT NULL,
     fee_texto text,
     den_id integer
 );
 
 
-ALTER TABLE public.feedback OWNER TO postgres;
+ALTER TABLE public.feedbacks OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 16415)
+-- TOC entry 218 (class 1259 OID 16410)
 -- Name: feedback_fee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -98,15 +98,15 @@ ALTER SEQUENCE public.feedback_fee_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 4894 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 218
 -- Name: feedback_fee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.feedback_fee_id_seq OWNED BY public.feedback.fee_id;
+ALTER SEQUENCE public.feedback_fee_id_seq OWNED BY public.feedbacks.fee_id;
 
 
 --
--- TOC entry 217 (class 1259 OID 16405)
+-- TOC entry 219 (class 1259 OID 16411)
 -- Name: fotos; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -126,7 +126,7 @@ ALTER TABLE public.fotos OWNER TO postgres;
 
 CREATE TABLE public.orgaos (
     org_id integer NOT NULL,
-    org_nome character varying(30)
+    org_nome character varying
 );
 
 
@@ -159,16 +159,16 @@ ALTER SEQUENCE public.orgaos_org_id_seq OWNED BY public.orgaos.org_id;
 
 --
 -- TOC entry 222 (class 1259 OID 16420)
--- Name: tipo; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tipos; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.tipo (
+CREATE TABLE public.tipos (
     tip_id integer NOT NULL,
-    tip_nome character varying(30)
+    tip_nome character varying
 );
 
 
-ALTER TABLE public.tipo OWNER TO postgres;
+ALTER TABLE public.tipos OWNER TO postgres;
 
 --
 -- TOC entry 223 (class 1259 OID 16423)
@@ -192,24 +192,24 @@ ALTER SEQUENCE public.tipo_tip_id_seq OWNER TO postgres;
 -- Name: tipo_tip_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.tipo_tip_id_seq OWNED BY public.tipo.tip_id;
+ALTER SEQUENCE public.tipo_tip_id_seq OWNED BY public.tipos.tip_id;
 
 
 --
 -- TOC entry 224 (class 1259 OID 16424)
--- Name: usuario; Type: TABLE; Schema: public; Owner: postgres
+-- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.usuario (
+CREATE TABLE public.usuarios (
     usu_id integer NOT NULL,
     usu_cpf numeric(11,0) NOT NULL,
-    usu_email character varying(40) NOT NULL,
-    usu_senha numeric(6,0) NOT NULL,
-    usu_nivel numeric(1,0) NOT NULL
+    usu_email character varying NOT NULL,
+    usu_nivel numeric(1,0) NOT NULL,
+    usu_senha character varying
 );
 
 
-ALTER TABLE public.usuario OWNER TO postgres;
+ALTER TABLE public.usuarios OWNER TO postgres;
 
 --
 -- TOC entry 225 (class 1259 OID 16427)
@@ -233,23 +233,23 @@ ALTER SEQUENCE public.usuario_usu_id_seq OWNER TO postgres;
 -- Name: usuario_usu_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.usuario_usu_id_seq OWNED BY public.usuario.usu_id;
+ALTER SEQUENCE public.usuario_usu_id_seq OWNED BY public.usuarios.usu_id;
 
 
 --
 -- TOC entry 4712 (class 2604 OID 16428)
--- Name: denuncia den_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: denuncias den_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.denuncia ALTER COLUMN den_id SET DEFAULT nextval('public.denuncia_den_id_seq'::regclass);
+ALTER TABLE ONLY public.denuncias ALTER COLUMN den_id SET DEFAULT nextval('public.denuncia_den_id_seq'::regclass);
 
 
 --
 -- TOC entry 4713 (class 2604 OID 16429)
--- Name: feedback fee_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: feedbacks fee_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.feedback ALTER COLUMN fee_id SET DEFAULT nextval('public.feedback_fee_id_seq'::regclass);
+ALTER TABLE ONLY public.feedbacks ALTER COLUMN fee_id SET DEFAULT nextval('public.feedback_fee_id_seq'::regclass);
 
 
 --
@@ -262,40 +262,40 @@ ALTER TABLE ONLY public.orgaos ALTER COLUMN org_id SET DEFAULT nextval('public.o
 
 --
 -- TOC entry 4715 (class 2604 OID 16431)
--- Name: tipo tip_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: tipos tip_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.tipo ALTER COLUMN tip_id SET DEFAULT nextval('public.tipo_tip_id_seq'::regclass);
+ALTER TABLE ONLY public.tipos ALTER COLUMN tip_id SET DEFAULT nextval('public.tipo_tip_id_seq'::regclass);
 
 
 --
 -- TOC entry 4716 (class 2604 OID 16432)
--- Name: usuario usu_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: usuarios usu_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.usuario ALTER COLUMN usu_id SET DEFAULT nextval('public.usuario_usu_id_seq'::regclass);
+ALTER TABLE ONLY public.usuarios ALTER COLUMN usu_id SET DEFAULT nextval('public.usuario_usu_id_seq'::regclass);
 
 
 --
 -- TOC entry 4877 (class 0 OID 16399)
 -- Dependencies: 215
--- Data for Name: denuncia; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: denuncias; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.denuncia VALUES (1, 'semaforo quebrado', 'semaforo da av da saudede perto do campua I da Unoeste não está funcionando', 4, 4, '2023-05-12 00:00:00', 1, 2);
-
-
---
--- TOC entry 4880 (class 0 OID 16410)
--- Dependencies: 218
--- Data for Name: feedback; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
+INSERT INTO public.denuncias VALUES (1, 'semaforo quebrado', 'semaforo da av da saudede perto do campua I da Unoeste não está funcionando', 4, 4, '2023-05-12 00:00:00', 1, 2);
 
 
 --
 -- TOC entry 4879 (class 0 OID 16405)
 -- Dependencies: 217
+-- Data for Name: feedbacks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4881 (class 0 OID 16411)
+-- Dependencies: 219
 -- Data for Name: fotos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -316,23 +316,23 @@ INSERT INTO public.orgaos VALUES (4, 'SETRAN');
 --
 -- TOC entry 4884 (class 0 OID 16420)
 -- Dependencies: 222
--- Data for Name: tipo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tipos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tipo VALUES (1, 'trânsito');
-INSERT INTO public.tipo VALUES (2, 'educação');
-INSERT INTO public.tipo VALUES (3, 'ambiental');
-INSERT INTO public.tipo VALUES (4, 'segurança');
+INSERT INTO public.tipos VALUES (1, 'trânsito');
+INSERT INTO public.tipos VALUES (2, 'educação');
+INSERT INTO public.tipos VALUES (3, 'ambiental');
+INSERT INTO public.tipos VALUES (4, 'segurança');
 
 
 --
 -- TOC entry 4886 (class 0 OID 16424)
 -- Dependencies: 224
--- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.usuario VALUES (1, 12111158963, 'admin@pm.br', 123321, 1);
-INSERT INTO public.usuario VALUES (2, 5488889915, 'ze@cidadao.com.br', 123, 2);
+INSERT INTO public.usuarios VALUES (1, 12111158963, 'admin@pm.br', 1, NULL);
+INSERT INTO public.usuarios VALUES (2, 5488889915, 'ze@cidadao.com.br', 2, NULL);
 
 
 --
@@ -346,7 +346,7 @@ SELECT pg_catalog.setval('public.denuncia_den_id_seq', 1, true);
 
 --
 -- TOC entry 4899 (class 0 OID 0)
--- Dependencies: 219
+-- Dependencies: 218
 -- Name: feedback_fee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -381,7 +381,7 @@ SELECT pg_catalog.setval('public.usuario_usu_id_seq', 2, true);
 
 
 --
--- TOC entry 4720 (class 2606 OID 16434)
+-- TOC entry 4722 (class 2606 OID 16434)
 -- Name: fotos denuncia_fotos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -391,19 +391,19 @@ ALTER TABLE ONLY public.fotos
 
 --
 -- TOC entry 4718 (class 2606 OID 16436)
--- Name: denuncia denuncia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: denuncias denuncia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.denuncia
+ALTER TABLE ONLY public.denuncias
     ADD CONSTRAINT denuncia_pkey PRIMARY KEY (den_id);
 
 
 --
--- TOC entry 4722 (class 2606 OID 16438)
--- Name: feedback feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4720 (class 2606 OID 16438)
+-- Name: feedbacks feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.feedback
+ALTER TABLE ONLY public.feedbacks
     ADD CONSTRAINT feedback_pkey PRIMARY KEY (fee_id);
 
 
@@ -418,68 +418,68 @@ ALTER TABLE ONLY public.orgaos
 
 --
 -- TOC entry 4726 (class 2606 OID 16442)
--- Name: tipo tipo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tipos tipo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.tipo
+ALTER TABLE ONLY public.tipos
     ADD CONSTRAINT tipo_pkey PRIMARY KEY (tip_id);
 
 
 --
 -- TOC entry 4728 (class 2606 OID 16444)
--- Name: usuario usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usuarios usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.usuario
+ALTER TABLE ONLY public.usuarios
     ADD CONSTRAINT usuario_pkey PRIMARY KEY (usu_id);
 
 
 --
--- TOC entry 4732 (class 2606 OID 16445)
+-- TOC entry 4733 (class 2606 OID 16445)
 -- Name: fotos FK_denFoto_den; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.fotos
-    ADD CONSTRAINT "FK_denFoto_den" FOREIGN KEY (den_id) REFERENCES public.denuncia(den_id);
+    ADD CONSTRAINT "FK_denFoto_den" FOREIGN KEY (den_id) REFERENCES public.denuncias(den_id);
 
 
 --
 -- TOC entry 4729 (class 2606 OID 16450)
--- Name: denuncia denuncia_org_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: denuncias denuncia_org_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.denuncia
+ALTER TABLE ONLY public.denuncias
     ADD CONSTRAINT denuncia_org_id_fkey FOREIGN KEY (org_id) REFERENCES public.orgaos(org_id) NOT VALID;
 
 
 --
 -- TOC entry 4730 (class 2606 OID 16455)
--- Name: denuncia denuncia_tip_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: denuncias denuncia_tip_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.denuncia
-    ADD CONSTRAINT denuncia_tip_id_fkey FOREIGN KEY (tip_id) REFERENCES public.tipo(tip_id) NOT VALID;
+ALTER TABLE ONLY public.denuncias
+    ADD CONSTRAINT denuncia_tip_id_fkey FOREIGN KEY (tip_id) REFERENCES public.tipos(tip_id) NOT VALID;
 
 
 --
 -- TOC entry 4731 (class 2606 OID 16460)
--- Name: denuncia denuncia_usu_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: denuncias denuncia_usu_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.denuncia
-    ADD CONSTRAINT denuncia_usu_id_fkey FOREIGN KEY (usu_id) REFERENCES public.usuario(usu_id) NOT VALID;
+ALTER TABLE ONLY public.denuncias
+    ADD CONSTRAINT denuncia_usu_id_fkey FOREIGN KEY (usu_id) REFERENCES public.usuarios(usu_id) NOT VALID;
 
 
 --
--- TOC entry 4733 (class 2606 OID 16465)
--- Name: feedback feedback_den_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4732 (class 2606 OID 16465)
+-- Name: feedbacks feedback_den_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.feedback
-    ADD CONSTRAINT feedback_den_id_fkey FOREIGN KEY (den_id) REFERENCES public.denuncia(den_id);
+ALTER TABLE ONLY public.feedbacks
+    ADD CONSTRAINT feedback_den_id_fkey FOREIGN KEY (den_id) REFERENCES public.denuncias(den_id);
 
 
--- Completed on 2026-04-28 12:01:20
+-- Completed on 2026-05-05 11:52:37
 
 --
 -- PostgreSQL database dump complete
