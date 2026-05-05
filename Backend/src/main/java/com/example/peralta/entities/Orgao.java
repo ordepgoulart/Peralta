@@ -2,6 +2,9 @@ package com.example.peralta.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "orgaos")
 public class Orgao {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="denuncia")
+@Table(name="denuncias")
 public class Denuncia {
 
     @Id
@@ -30,6 +30,38 @@ public class Denuncia {
 
     @OneToMany(mappedBy = "denuncia", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Foto> fotos = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name = "org_id")
+    private Orgao orgao;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name = "usu_id")
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name = "tip_id")
+    private Tipo tipo;
+
+    public Denuncia(Long id, String titulo, String texto, int urgencia, LocalDate data, List<Foto> fotos, Orgao orgao, Usuario usuario, Tipo tipo) {
+        this.id = id;
+        this.titulo = titulo;
+        this.texto = texto;
+        this.urgencia = urgencia;
+        this.data = data;
+        this.fotos = fotos;
+        this.orgao = orgao;
+        this.usuario = usuario;
+        this.tipo = tipo;
+    }
+
+    public Denuncia(String titulo, String texto, int urgencia, LocalDate data, List<Foto> fotos, Orgao orgao, Usuario usuario, Tipo tipo) {
+        this(0L,titulo,texto,urgencia,data,fotos,orgao,usuario,tipo);
+    }
+
+    public Denuncia() {
+        this(0L,"","",0,LocalDate.now(),new ArrayList<Foto>(),null,null,null);
+    }
 
     public Long getId() {
         return id;
@@ -93,6 +125,30 @@ public class Denuncia {
                 remove = true;
             }
         }
+    }
+
+    public Orgao getOrgao() {
+        return orgao;
+    }
+
+    public void setOrgao(Orgao orgao) {
+        this.orgao = orgao;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
 
     @Override

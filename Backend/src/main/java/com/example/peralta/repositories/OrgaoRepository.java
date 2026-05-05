@@ -1,4 +1,9 @@
 package com.example.peralta.repositories;
 
-public interface OrgaoRepository {
+import com.example.peralta.entities.Orgao;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface OrgaoRepository extends JpaRepository<Orgao,Long> {
 }
