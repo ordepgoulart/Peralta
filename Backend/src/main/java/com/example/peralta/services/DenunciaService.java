@@ -2,6 +2,7 @@ package com.example.peralta.services;
 
 import com.example.peralta.entities.Denuncia;
 import com.example.peralta.entities.Foto;
+import com.example.peralta.entities.Tipo;
 import com.example.peralta.repositories.DenunciaRepository;
 import com.example.peralta.repositories.FotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,10 @@ public class DenunciaService {
             denunciaRepository.deleteById(id);
             return true;
         }
+    }
+
+    public List<Denuncia> findByUser(Long id) {
+        List<Denuncia> denuncias = denunciaRepository.findByUser(id);
+        return denuncias;
     }
 }
