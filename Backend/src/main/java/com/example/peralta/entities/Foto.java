@@ -24,6 +24,10 @@ public class Foto {
         this.arquivo = arquivo;
     }
 
+    public Foto(String arquivo) {
+        this(0l,null,arquivo);
+    }
+
     public Foto(Denuncia denuncia, String arquivo) {
         this(0L,denuncia, arquivo);
     }

@@ -1,16 +1,21 @@
 package com.example.peralta.restcontrollers;
 
 import com.example.peralta.entities.*;
-import com.example.peralta.services.DenunciaService;
-import com.example.peralta.services.FeedBackService;
-import com.example.peralta.services.OrgaoService;
-import com.example.peralta.services.TipoService;
+import com.example.peralta.security.JWTTokenProvider;
+import com.example.peralta.services.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/apis/basic")
@@ -24,6 +29,12 @@ public class UserController {
     private DenunciaService denunciaService;
     @Autowired
     private FeedBackService feedBackService;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+    @Autowired
+    private JWTTokenProvider jwtTokenProvider;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("get-institutions")
     public ResponseEntity<Object> getInstitutions() {
@@ -59,8 +70,38 @@ public class UserController {
     }
 
     @PostMapping("add_report")
-    public ResponseEntity<Object> addReport() {
+    public ResponseEntity<Object> addReport(@RequestParam("fotos") MultipartFile[] fotos,
+                                            @RequestParam("titulo") String titulo, @RequestParam("texto") String texto,
+                                            @RequestParam("urgencia") int urgencia, @RequestParam("orgao") Orgao orgao,
+                                            @RequestParam("tipo") Tipo tipo
+    ) {
+        if(titulo == null || orgao == null || tipo == null || titulo.isEmpty() || texto.isEmpty())
+            return ResponseEntity.badRequest().body(Map.of("message","Todos os dados devem ser preenchidos"));
+        final String UPLOAD_FOLDER = System.getProperty("user.dir") + "/uploads/";
+        try
+        {   int i = 0;
+            String token = httpServletRequest.getHeader("Authorization");
+            String username = JWTTokenProvider.getAllClaimsFromToken(token).getSubject();
+            LocalDate localDate = LocalDate.now();
+            Usuario usuario = usuarioService.findByKeyAccess(username);
+            if(usuario == null)
+                return ResponseEntity.badRequest().body(new Erro("Usuário não localizado."));
+            Denuncia denuncia = new Denuncia(orgao,usuario,tipo,localDate,urgencia,titulo,texto);
+            File uploadFolder = new File(UPLOAD_FOLDER);
+            if (!uploadFolder.exists()) uploadFolder.mkdir();
+            for (MultipartFile foto : fotos) {
+                String fileName = titulo + "_" + username + "_" + tipo.getId() + localDate.toString() + i + FilenameUtils.getExtension(foto.getOriginalFilename());
+                i++;
+                foto.transferTo(new File(uploadFolder.getAbsolutePath() + "/"+ fileName));
+                denuncia.addFoto(new Foto(fileName));
+            }
+            DenunciaService denunciaService = new DenunciaService();
+            denunciaService.save(denuncia);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("message",e.getMessage()));
+        }
 
-        return null;
+        return ResponseEntity.ok(Map.of("message","Denúncia registrada"));
     }
 }

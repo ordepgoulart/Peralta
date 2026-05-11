@@ -55,6 +55,10 @@ public class Denuncia {
         this.tipo = tipo;
     }
 
+    public Denuncia(Orgao orgao, Usuario usuario, Tipo tipo, LocalDate data, int urgencia, String texto, String titulo) {
+        this(0L,titulo,texto,urgencia,data,new ArrayList<>(),orgao,usuario,tipo);
+    }
+
     public Denuncia(String titulo, String texto, int urgencia, LocalDate data, List<Foto> fotos, Orgao orgao, Usuario usuario, Tipo tipo) {
         this(0L,titulo,texto,urgencia,data,fotos,orgao,usuario,tipo);
     }
