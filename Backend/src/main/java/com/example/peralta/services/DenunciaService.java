@@ -68,7 +68,7 @@ public class DenunciaService {
     }
 
     public List<Denuncia> findByUser(Long id) {
-        List<Denuncia> denuncias = denunciaRepository.findByUser(id);
+        List<Denuncia> denuncias = denunciaRepository.getByUserId(id);
         return denuncias;
     }
 }
