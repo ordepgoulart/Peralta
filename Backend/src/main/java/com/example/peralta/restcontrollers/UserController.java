@@ -96,12 +96,13 @@ public class UserController {
                 denuncia.addFoto(new Foto(fileName));
             }
             DenunciaService denunciaService = new DenunciaService();
-            denunciaService.save(denuncia);
+            denuncia = denunciaService.save(denuncia);
+            if (denuncia != null)
+                return ResponseEntity.ok(denuncia);
+            return ResponseEntity.badRequest().body(new Erro("Não foi possível inserir a denúncia"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(Map.of("message",e.getMessage()));
         }
-
-        return ResponseEntity.ok(Map.of("message","Denúncia registrada"));
     }
 }
