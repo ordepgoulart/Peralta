@@ -25,7 +25,7 @@ public class OrgaoService {
     }
 
     public List<Orgao> findByName(String name){
-        List<Orgao> orgaos = orgaoRepository.findByName(name);
+        List<Orgao> orgaos = orgaoRepository.findByNome(name);
         return orgaos;
     }
 

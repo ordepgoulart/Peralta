@@ -32,15 +32,15 @@ public class Denuncia {
     private List<Foto> fotos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "org_id")
+    @JoinColumn(name = "org_id")
     private Orgao orgao;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "usu_id")
+    @JoinColumn(name = "usu_id")
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "tip_id")
+    @JoinColumn(name = "tip_id")
     private Tipo tipo;
 
     public Denuncia(Long id, String titulo, String texto, int urgencia, LocalDate data, List<Foto> fotos, Orgao orgao, Usuario usuario, Tipo tipo) {
