@@ -23,8 +23,6 @@ public class AdminController {
     @Autowired
     private HttpServletRequest httpServletRequest;
     @Autowired
-    private JWTTokenProvider jwtTokenProvider;
-    @Autowired
     private UsuarioService usuarioService;
     @Autowired
     private OrgaoService orgaoService;

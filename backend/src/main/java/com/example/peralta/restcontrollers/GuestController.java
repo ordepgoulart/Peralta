@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/apis/guest")
+@RequestMapping("/guest")
 public class GuestController {
 
     UsuarioService usuarioService;
@@ -23,8 +23,16 @@ public class GuestController {
             String token;
             if(username.equals("admin") && password.equals("admin123"))
             {
-                token = JWTTokenProvider.createToken(username, "admin");
-                return ResponseEntity.ok().body(token);
+                try
+                {
+                    System.out.println("TO?");
+                    token = JWTTokenProvider.createToken(username, "admin");
+                    return ResponseEntity.ok().body(token);
+                }
+                catch (Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
             }
             else
             {

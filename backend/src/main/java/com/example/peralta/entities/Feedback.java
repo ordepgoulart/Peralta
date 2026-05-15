@@ -14,7 +14,7 @@ public class Feedback {
     @Column(name="fee_texto")
     private String texto;
 
-    @OneToOne(mappedBy="feedback",fetch = FetchType.EAGER,
+    @OneToOne(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "den_id")
     private Denuncia denuncia;

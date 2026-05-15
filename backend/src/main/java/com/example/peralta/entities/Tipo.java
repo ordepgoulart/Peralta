@@ -3,7 +3,7 @@ package com.example.peralta.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tipo")
+@Table(name = "tipos")
 public class Tipo {
 
     @Id

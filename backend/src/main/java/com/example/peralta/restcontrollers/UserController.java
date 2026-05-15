@@ -32,8 +32,6 @@ public class UserController {
     @Autowired
     private HttpServletRequest httpServletRequest;
     @Autowired
-    private JWTTokenProvider jwtTokenProvider;
-    @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping("get-institutions")
