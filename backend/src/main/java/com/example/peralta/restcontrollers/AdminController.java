@@ -143,24 +143,9 @@ public class AdminController {
     @GetMapping("all-types")
     public ResponseEntity<Object> getAllTypes ()
     {
-//        try
-//        {
-//            String token = httpServletRequest.getHeader("Authorization");
-//            if(JWTTokenProvider.verifyToken(token)) {
-//                String nivel = JWTTokenProvider.getAllClaimsFromToken(token).get("nivel").toString();
-                //if(nivel.equals("admin")) {
-                    List<Tipo> tipoList = new ArrayList<Tipo>();
-                    tipoList = tipoService.findAll();
-                    return ResponseEntity.ok(tipoList);
-                //}
-//            }
-            //return ResponseEntity.badRequest().body("Token inválido");
-//        }
-//        catch (Exception ex)
-//        {
-//            return ResponseEntity.badRequest().body(ex.getMessage());
-//        }
-
+        List<Tipo> tipoList = new ArrayList<Tipo>();
+        tipoList = tipoService.findAll();
+        return ResponseEntity.ok(tipoList);
     }
 
     @DeleteMapping("delete-type/{id}")
