@@ -35,7 +35,7 @@
     {
         display: flex;
         width: max-content;
-        animation: slide 14s linear infinite;
+        animation: slide 80s linear infinite;
         height: 100%;
     }
 

@@ -1,56 +1,64 @@
 <script setup>
     import { ref } from "vue";
-
+    import Manager from "../components/data/Manager.vue";
     import Header from "../components/layout/Header.vue";
     import Footer from "../components/layout/Footer.vue";
 
-    import RowDivision from "../components/forms/RowDivision.vue";
-    import InputText from "../components/forms/Inputs/InputText.vue";
-    import InputFile from "../components/forms/Inputs/InputFile.vue";
-    import Button from "../components/forms/Button.vue";
-    import StripSlide from "../components/attachment/StripSlide.vue";
+    const myColumns = [
+        { key: 'id', label: 'ID' },
+        { key: 'name', label: 'Nome' },
+        { key: 'email', label: 'E-mail' },
+        {
+            key: 'role',
+            label: 'Cargo',
+            type: 'category',
+            colors:
+                {
+                    'Admin': '#9b59b6',
+                    'Moderador': '#e67e22',
+                    'Usuário': '#34495e'
+                }
+        }
+    ];
 
-    import Validator from "../utils/Validator.js";
-    import Masker from "../utils/Masker.js";
+    const myData = ref([
+        { id: 1, name: 'Mr. Sá', email: 'sa@email.com', role: 'Admin' },
+        { id: 2, name: 'Mr. Pooh', email: 'pooh@email.com', role: 'Usuário' }
+    ]);
 
-    const name = ref('');
-    const phone = ref('');
-    const cpf = ref('');
-    const cep = ref('');
-    const email = ref('');
+    const onSave = (item) =>
+    {
+        if (item.id)
+        {
+            const index = myData.value.findIndex(i => i.id === item.id);
+            myData.value[index] = item;
+        }
+        else
+        {
+            item.id = myData.value.length + 1;
+            myData.value.push(item);
+        }
+    };
+
+    const onDelete = (item) =>
+    {
+        myData.value = myData.value.filter(i => i.id !== item.id);
+    };
 </script>
 
 <template>
     <Header />
 
     <main id="center">
-        <div class="form-container">
-            <StripSlide height="30px" class="spacer" />
-
-            <h1 class="title">Registrar denuncias</h1>
-
-            <RowDivision cols="2">
-                <InputText v-model="name" :validator="Validator.min(3)" label="Nome" placeholder="Seu nome completo" />
-                <InputText v-model="phone" :mask="Masker.phone" :validator="Validator.phone" label="Telefone" placeholder="(00) 00000-0000"/>
-            </RowDivision>
-
-            <RowDivision cols="2">
-                <InputText v-model="cpf" :mask="Masker.cpf" :validator="Validator.cpf" label="Cpf" placeholder="000.000.000-00"/>
-                <InputText v-model="cep" :mask="Masker.cep" :validator="Validator.cep" label="Cep" placeholder="00000-000" />
-            </RowDivision>
-
-            <RowDivision cols="1">
-                <InputText v-model="email" :validator="Validator.email" label="Email" placeholder="seu-email@email.com" />
-            </RowDivision>
-
-            <RowDivision cols="1">
-                <InputFile />
-            </RowDivision>
-
-            <RowDivision cols="1">
-                <Button>Enviar Relatório</Button>
-            </RowDivision>
-        </div>
+        <Manager
+            title="Gestão de Usuários"
+            :columns="myColumns"
+            :data="myData"
+            filterKey="name"
+            @save="onSave"
+            @delete="onDelete"
+            maxWidth="1400"
+        />
     </main>
 
     <Footer />
@@ -59,28 +67,6 @@
 <style scoped>
     #center
     {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 20px;
-    }
-
-    .form-container
-    {
-        width: 100%;
-        max-width: 800px;
-        padding: 2rem;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        border: 1px solid var(--border);
-    }
-
-    .spacer
-    {
-        margin-bottom: 2rem;
+        padding: 60px;
     }
 </style>

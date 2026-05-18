@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="" />
+    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,12 +13,31 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "#1 on igor"
+    "git-widget-placeholder": "#1 on igor",
+    "last_opened_file_path": "/home/mrs/IdeaProjects/Peralta/frontend",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "ts.external.directory.path": "/opt/webstorm/plugins/javascript-plugin/jsLanguageServicesImpl/external"
   }
 }]]></component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Backend Update">
+      <option name="closed" value="true" />
+      <created>1778853116343</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1778853116343</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Backend Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Backend Update" />
   </component>
 </project>
