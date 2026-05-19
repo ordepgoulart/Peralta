@@ -25,8 +25,8 @@ public class GuestController {
             {
                 try
                 {
-                    System.out.println("TO?");
                     token = JWTTokenProvider.createToken(username, "admin");
+                    System.out.println(token);
                     return ResponseEntity.ok().body(token);
                 }
                 catch (Exception e)
