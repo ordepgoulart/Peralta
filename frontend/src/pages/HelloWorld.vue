@@ -3,6 +3,7 @@
     import Manager from "../components/data/Manager.vue";
     import Header from "../components/layout/Header.vue";
     import Footer from "../components/layout/Footer.vue";
+    import DenunciaCard from "../components/CardDenunciaUsuario.vue";
 
     const myColumns = [
         { key: 'id', label: 'ID' },
@@ -59,6 +60,8 @@
             @delete="onDelete"
             maxWidth="1400"
         />
+      <DenunciaCard titulo="Vazamento de gás" codigo=0 urgencia="1" orgao="Prefeitura" tipo="Infraestrutura"
+                    texto="Vazamento de gás detectado no subsolo da estrutura"/>
     </main>
 
     <Footer />

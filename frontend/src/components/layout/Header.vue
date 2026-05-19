@@ -1,4 +1,4 @@
-<script setup>
+<script>
     import { ref } from 'vue';
     import { BIconPersonCircle, BIconChevronDown } from 'bootstrap-icons-vue';
 
@@ -8,6 +8,20 @@
     {
         isDropdownOpen.value = !isDropdownOpen.value;
     };
+
+    export default {
+      components: {
+        BIconPersonCircle, BIconChevronDown
+      },
+      data()
+      {
+        return { token : null };
+      },
+      methods: {
+
+      },
+
+    }
 </script>
 
 <template>
