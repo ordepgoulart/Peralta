@@ -1,7 +1,5 @@
 <template>
-    <div class="modal-overlay">
-        <div class="modal-container">
-            <StripSlide height="35px" />
+      <div class="modal-container">
 
             <main class="modal-body">
                 <div class="auth-form">
@@ -64,7 +62,6 @@
                 </Button>
             </footer>
         </div>
-    </div>
 </template>
 
 <script>
@@ -167,20 +164,7 @@ export default {
 </script>
 
 <style scoped>
-.modal-overlay
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
-}
+
 
 .modal-container
 {
@@ -190,8 +174,7 @@ export default {
     max-width: 500px;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.4);
     display: flex;
     flex-direction: column;
 }
@@ -202,15 +185,6 @@ export default {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 1.1em;
-}
-
-.close-btn
-{
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    color: var(--text);
-    cursor: pointer;
 }
 
 .modal-body
@@ -230,7 +204,11 @@ export default {
 
 .btn-cancel
 {
-    background: #95a5a6 !important;
+    background: #3C0061 !important;
+    box-shadow: 6px 8px rgba(157,0,255, 0.1);
+    font-size: 0.85em;
+    font-weight: bold;
+    text-shadow: rgba(149, 165, 166, 0.1) 1px 1px 1px;
     color: white !important;
     padding: 10px 20px !important;
 }
@@ -238,6 +216,12 @@ export default {
 .btn-confirm
 {
     padding: 10px 20px !important;
+    background: #EBBE4D !important;
+    box-shadow: 6px 8px rgba(186,142,35, 0.1);
+    font-size: 0.85em;
+    font-weight: bold;
+    text-shadow: rgba(255, 255, 255, 0.1) 1px 1px 1px;
+    color: black !important;
 }
 
 .auth-form
