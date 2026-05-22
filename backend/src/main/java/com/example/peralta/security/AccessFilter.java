@@ -25,7 +25,7 @@ public class AccessFilter implements Filter {
                 if (route.contains(nivel))
                     filterChain.doFilter(servletRequest, servletResponse);
                 else {
-                    mensage = "Unauthorized : Access Denied, level insufficient, required : " + nivel;
+                    mensage = "Unauthorized : Access Denied, level insufficient, now : " + nivel;
                 }
             }
             ((HttpServletResponse) servletResponse).setStatus(500);

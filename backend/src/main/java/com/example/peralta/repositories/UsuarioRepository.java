@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
-    @Query(value = "SELECT * FROM usuario WHERE usu_cpf = %:key% OR usu_email = %:key%", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios WHERE usu_cpf = %:key% OR usu_email = %:key%", nativeQuery = true)
     public Usuario findByKeyAccess(@Param("key") String key);
 }
