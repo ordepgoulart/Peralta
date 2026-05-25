@@ -10,9 +10,9 @@
 
                     <div class="form-grid">
                         <div v-if="!isLogin" class="form-group">
-                            <label for="nome">CPF</label>
+                            <label for="cpf">CPF</label>
                             <input
-                                id="nome"
+                                id="cpf"
                                 v-model="form.cpf"
                                 type="text"
                                 placeholder="Digite o CPF"
@@ -194,18 +194,18 @@ export default {
 
 .modal-footer
 {
+    margin-top: -10px ;
     padding: 20px;
     display: flex;
     gap: 15px;
     justify-content: flex-end;
-    background: rgba(255, 255, 255, 0.02);
-    border-top: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .btn-cancel
 {
-    background: #3C0061 !important;
-    box-shadow: 6px 8px rgba(157,0,255, 0.1);
+    background: var(--cancel) !important;
+    box-shadow: 6px 8px var(--shadow_red);
     font-size: 0.85em;
     font-weight: bold;
     text-shadow: rgba(149, 165, 166, 0.1) 1px 1px 1px;
@@ -216,8 +216,8 @@ export default {
 .btn-confirm
 {
     padding: 10px 20px !important;
-    background: #EBBE4D !important;
-    box-shadow: 6px 8px rgba(186,142,35, 0.1);
+    background: var(--accent) !important;
+    box-shadow: 6px 8px var(--shadow_yellow);
     font-size: 0.85em;
     font-weight: bold;
     text-shadow: rgba(255, 255, 255, 0.1) 1px 1px 1px;
@@ -245,7 +245,8 @@ export default {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 1rem;
-    color: rgba(186, 142, 35 , 1);
+    color: var(--text_switch);
+    text-shadow: var(--shadow_yellow) 2px 2px 2px;
     font-weight: bold;
 }
 
@@ -300,28 +301,27 @@ export default {
 
 .form-group input:focus
 {
-    border-color: var(--primary, #42b883);
-    box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.15);
+    border-color: var(--focus);
+    box-shadow: 0 3px 4px 6px rgba(237,196,35, 0.1);
     background: rgba(255, 255, 255, 0.05);
 }
 
 .form-switch
 {
     padding-top: 16px;
-    border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
     font-size: 0.9rem;
-    color: var(--text-muted, rgba(255, 255, 255, 0.65));
+    color: var(--text-muted, rgba(255, 255, 255, 0.40));
 }
 
 .switch-btn
 {
     background: none;
     border: none;
-    color: var(--primary, #42b883);
+    color: var(--text_switch);
     font-weight: 700;
     cursor: pointer;
     transition: opacity 0.2s ease;

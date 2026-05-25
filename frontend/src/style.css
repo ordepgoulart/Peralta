@@ -1,5 +1,10 @@
 :root
 {
+  --focus : rgba(135,111,61);
+  --text_switch : rgba(255,204,0,0.8);
+  --shadow_yellow : rgba(250,209,23,0.2);
+  --shadow_red : rgba(220,92,88, 0.2);
+  --cancel : rgba(174,23,46);
   --text: #6b6375;
   --bg: #000000;
   --border: #e5e4e7;

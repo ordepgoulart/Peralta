@@ -18,19 +18,19 @@ public class GuestController {
     UsuarioService usuarioService;
 
     @PostMapping("login")
-    public ResponseEntity<Object> login(String username, String password) {
+    public ResponseEntity<Object> login(String usuario, String senha) {
 
-        if(username != null && password != null)
+        if(usuario != null && senha != null)
         {
-            Usuario usuario = usuarioService.findByKeyAccess(username);
+            Usuario usuario = usuarioService.findByKeyAccess(usuario);
             String token;
-            if(usuario != null && password.equals(usuario.getSenha()))
+            if(usuario != null && senha.equals(usuario.getSenha()))
             {
                 if(usuario.getAcesso() == 1)
                 {
                     try
                     {
-                        token = JWTTokenProvider.createToken(username, "admin");
+                        token = JWTTokenProvider.createToken(usuario, "admin");
                         System.out.println(token);
                         return ResponseEntity.ok().body(token);
                     }
@@ -41,7 +41,7 @@ public class GuestController {
                 }
                 else
                 {
-                    token = JWTTokenProvider.createToken(username, "basic");
+                    token = JWTTokenProvider.createToken(usuario, "basic");
                     return ResponseEntity.ok().body(token);
                 }
 
