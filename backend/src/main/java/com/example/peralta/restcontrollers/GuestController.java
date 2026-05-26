@@ -1,30 +1,33 @@
 package com.example.peralta.restcontrollers;
 
+import com.example.peralta.DTO.LOGIN;
+import com.example.peralta.DTO.TRANSFER_DTO;
 import com.example.peralta.entities.Erro;
 import com.example.peralta.entities.Usuario;
 import com.example.peralta.security.JWTTokenProvider;
 import com.example.peralta.services.UsuarioService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
 
+
     @Autowired
     UsuarioService usuarioService;
 
     @PostMapping("login")
-    public ResponseEntity<Object> login(String username, String senha) {
-
-        if(username != null && senha != null)
+    public ResponseEntity<Object> login(@RequestBody LOGIN requestDTO) {
+        System.out.println("login");
+        if(requestDTO.username() != null && requestDTO.senha() != null)
         {
-            Usuario usuario = usuarioService.findByKeyAccess(username);
+            Usuario usuario = usuarioService.findByKeyAccess(requestDTO.username());
             String token;
-            if(usuario != null && senha.equals(usuario.getSenha()))
+            if(usuario != null && requestDTO.senha().equals(usuario.getSenha()))
             {
 
                 try
@@ -33,8 +36,8 @@ public class GuestController {
                         token = JWTTokenProvider.createToken(usuario.getEmail(), "admin");
                     else
                         token = JWTTokenProvider.createToken(usuario.getEmail(), "basic");
-                    System.out.println(token);
-                    return ResponseEntity.ok().body(token);
+                    TRANSFER_DTO transferDto = new TRANSFER_DTO(usuario.getAcesso(), token);
+                    return ResponseEntity.ok(transferDto);
                 }
                 catch (Exception e)
                 {
@@ -46,8 +49,8 @@ public class GuestController {
         return ResponseEntity.badRequest().body("Usuário e senha inválidos");
     }
 
-    @PostMapping("cadastrar")
-    public ResponseEntity<Object> cadastrar(String email, String senha, String cpf) {
+    @PostMapping("cadastrar/{email}/{senha}/{cpf}")
+    public ResponseEntity<Object> cadastrar(@PathVariable("email") String email, @PathVariable("senha") String senha,@PathVariable("cpf") String cpf) {
         System.out.println(email);
         System.out.println(senha);
         System.out.println(cpf);
@@ -62,9 +65,9 @@ public class GuestController {
                 Usuario newUsuario = new Usuario(cpf, email, 2, senha);
                 newUsuario = usuarioService.save(newUsuario);
                 if (newUsuario != null) {
-                    return ResponseEntity.ok().body(newUsuario);
+                    return ResponseEntity.ok().body("Usuario cadastrado com sucesso");
                 }
-                return ResponseEntity.badRequest().body(new Erro("Não foi possível cadastrar o tipo de problema especificado."));
+                return ResponseEntity.badRequest().body(new Erro("Um erro não especificado ocorreu durante o cadastro."));
             }
         }
         return ResponseEntity.badRequest().body("Todos os campos devem ser preenchidos");

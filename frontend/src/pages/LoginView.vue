@@ -17,29 +17,45 @@
       async handleAuth(dados){
         if(dados !== undefined){
           if(dados.mode === "login"){
-            // api.post("/guest/login", { senha: dados.senha, usuario : dados.email })
-            //     .then((res) => {
-            //     if(res.status === 200){
-            //       localStorage.setItem("Authorization", res.data.token);
-            //       this.$toast.success("Usuário logado com sucesso!");
-            //       // if(res.data.token.nivel == 0)
-                   
-            //       // else this.$router.push("/admin");
-            //     }
-            //     else
-            //     {
-            //       this.$toast.error("Houve um erro ao realizar o seu login");
-            //     }
-            // })
-            // .catch((err) => {
-            //   this.$toast.error("Houve um erro ao realizar o seu login");
-            // })
+            console.log(dados.senha, dados.email)
+            await api.post("/guest/login", { senha: dados.senha, username : dados.email })
+                .then((res) => {
+                if(res.status === 200){
+                  localStorage.setItem("Authorization", res.data.token);
+                  this.$toast.success("Usuário logado com sucesso!");
+                  if(res.data.nivel == 1)
+                    this.$router.push("/admin");
+                  else
+                    this.$router.push("/basic");
+                }
+                else
+                {
+                  this.$toast.error("Houve um erro ao realizar o seu login");
+                }
+            })
+            .catch((err) => {
+              this.$toast.error("Houve um erro ao realizar o seu login");
+            })
           }
           else 
           {
-              // api.post("/guest/cadastrar", { email: dados.email, senha : dados.senha, cpf : dados.cpf }) ;           
+              api.post(`/guest/cadastrar/${dados.email}/${dados.senha}/${dados.cpf}`)
+                  .then((res) => {
+                    if(res.status === 200){
+                      this.$toast.success("Usuário cadastrado com sucesso!");
+                      this.authMode = "login";
+                    }
+                    else
+                    {
+                      this.$toast.error("Não foi possível realizar cadastrar!");
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    this.$toast.error(err.body.data);
+                  });
           }
-          this.$router.push("/basic");
+          //
         }
         
       }

@@ -5,7 +5,7 @@
 -- Dumped from database version 16.6
 -- Dumped by pg_dump version 16.6
 
--- Started on 2026-05-22 11:57:22
+-- Started on 2026-05-26 12:04:40
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -331,9 +331,10 @@ INSERT INTO public.tipos VALUES (4, 'segurança');
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.usuarios VALUES (1, 'admin@pm.br', 1, NULL, NULL);
 INSERT INTO public.usuarios VALUES (2, 'ze@cidadao.com.br', 2, NULL, NULL);
-INSERT INTO public.usuarios VALUES (3, 'pedrosa@gmail.com', 0, 'pedro123', '50522650856');
+INSERT INTO public.usuarios VALUES (1, 'admin', 1, 'admin123', NULL);
+INSERT INTO public.usuarios VALUES (4, 'pedrosa2843@gmail.com', 2, 'pedro123', '50522650856');
+INSERT INTO public.usuarios VALUES (5, 'pedrosa2846@gmail.com', 2, '1323', '123');
 
 
 --
@@ -378,7 +379,7 @@ SELECT pg_catalog.setval('public.tipo_tip_id_seq', 4, true);
 -- Name: usuario_usu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_usu_id_seq', 3, true);
+SELECT pg_catalog.setval('public.usuario_usu_id_seq', 5, true);
 
 
 --
@@ -480,7 +481,7 @@ ALTER TABLE ONLY public.feedbacks
     ADD CONSTRAINT feedback_den_id_fkey FOREIGN KEY (den_id) REFERENCES public.denuncias(den_id);
 
 
--- Completed on 2026-05-22 11:57:23
+-- Completed on 2026-05-26 12:04:40
 
 --
 -- PostgreSQL database dump complete

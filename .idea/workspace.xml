@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update">
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/security/AccessFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/security/AccessFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/DTO/LOGIN.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/DTO/TRANSFER_DTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/GuestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/GuestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/service/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/service/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +37,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/ordepgoulart/Peralta.git",
-    "accountId": "bdcc8a25-898d-4c1c-bee2-04005cd178c4"
+    "accountId": "48565859-4b42-4e5e-a388-d9dbf8af751e"
   }
 }]]></component>
   <component name="MavenImportPreferences">
@@ -46,6 +51,65 @@
     <commands />
     <urls />
   </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.000005283773302" />
+      <entry key="MS500" value="1.0891483407502909" />
+      <entry key="S2" value="1.8112993165316436" />
+      <entry key="S5" value="2.670839411456271" />
+      <entry key="S10" value="3.295667846884384" />
+      <entry key="S30" value="4.195459758182794" />
+      <entry key="S60" value="4.737518536460003" />
+      <entry key="M2" value="5.321693372698101" />
+      <entry key="M5" value="7.8701700895777895" />
+      <entry key="M10" value="14.765220473881019" />
+      <entry key="M15" value="21.74652786453141" />
+      <entry key="M30" value="37.183312617502104" />
+      <entry key="H1" value="52.14344755752693" />
+      <entry key="H2" value="62.95020723558523" />
+      <entry key="H4" value="69.50744671987486" />
+      <entry key="D1" value="75.68015958396019" />
+      <entry key="W1" value="76.80962423435835" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="7.80576700764964E-215" />
+      <entry key="MS500" value="1.5082839748496297E-43" />
+      <entry key="S2" value="1.9711263267711633E-11" />
+      <entry key="S5" value="5.400544167580036E-5" />
+      <entry key="S10" value="0.00856246223449667" />
+      <entry key="S30" value="0.31042311606581907" />
+      <entry key="S60" value="0.8552161319989959" />
+      <entry key="M2" value="1.5538890948482778" />
+      <entry key="M5" value="2.8476050326613382" />
+      <entry key="M10" value="4.585717606241508" />
+      <entry key="M15" value="5.865036128424581" />
+      <entry key="M30" value="8.129697687023631" />
+      <entry key="H1" value="10.037990771331552" />
+      <entry key="H2" value="11.34459256983265" />
+      <entry key="H4" value="12.121549952484607" />
+      <entry key="D1" value="12.845825493842534" />
+      <entry key="W1" value="12.977774645310769" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="5.786108779214343E-6" />
+      <entry key="MS500" value="0.127965864785738" />
+      <entry key="S2" value="1.1681026189195978" />
+      <entry key="S5" value="2.2695385817587157" />
+      <entry key="S10" value="3.052063566968152" />
+      <entry key="S30" value="4.375237441720981" />
+      <entry key="S60" value="5.494756550159437" />
+      <entry key="M2" value="6.8049288106856745" />
+      <entry key="M5" value="10.673671952461556" />
+      <entry key="M10" value="19.31912573494124" />
+      <entry key="M15" value="27.585590290212114" />
+      <entry key="M30" value="45.29579081327912" />
+      <entry key="H1" value="62.17107448613404" />
+      <entry key="H2" value="74.28903083453004" />
+      <entry key="H4" value="81.62594048222431" />
+      <entry key="D1" value="88.52544935324453" />
+      <entry key="W1" value="89.78732166621326" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -54,25 +118,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Peralta&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.preferred.runtime.type.id": "node",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Peralta",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2026.1.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Aluno\Downloads\Peralta\Backend" />
@@ -81,18 +152,19 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.24374.125" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="eebb2089-80ad-4ec8-b2a6-115801da0a03" name="Changes" comment="" />
+      <changelist id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update" />
       <created>1777040228222</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1777040228222</updated>
       <workItem from="1777383574157" duration="49000" />
+      <workItem from="1779803495234" duration="4302000" />
     </task>
     <servers />
   </component>
