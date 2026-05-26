@@ -36,7 +36,7 @@ public class GuestController {
                         token = JWTTokenProvider.createToken(usuario.getEmail(), "admin");
                     else
                         token = JWTTokenProvider.createToken(usuario.getEmail(), "basic");
-                    TRANSFER_DTO transferDto = new TRANSFER_DTO(usuario.getAcesso(), token);
+                    TRANSFER_DTO transferDto = new TRANSFER_DTO(usuario.getAcesso(), token, usuario.getId());
                     return ResponseEntity.ok(transferDto);
                 }
                 catch (Exception e)

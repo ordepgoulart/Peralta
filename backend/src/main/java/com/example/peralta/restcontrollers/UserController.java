@@ -58,10 +58,10 @@ public class UserController {
         return ResponseEntity.ok(denuncias);
     }
 
-    @GetMapping("get-feedback")
-    public ResponseEntity<Object> getFeedback(Long denunciaId)
+    @GetMapping("get-feedback/{id}")
+    public ResponseEntity<Object> getFeedback(@PathVariable Long id)
     {
-        Feedback feedback = feedBackService.getByReportId(denunciaId);
+        Feedback feedback = feedBackService.getByReportId(id);
         if(feedback != null)
             return ResponseEntity.ok(feedback);
         return ResponseEntity.badRequest().body(new Erro("A denúncia informada, ainda não possui um feedbakc"));
