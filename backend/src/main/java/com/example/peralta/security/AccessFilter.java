@@ -26,10 +26,15 @@ public class AccessFilter implements Filter {
                     filterChain.doFilter(servletRequest, servletResponse);
                 else {
                     mensage = "Unauthorized : Access Denied, level insufficient, now : " + nivel;
+                    ((HttpServletResponse) servletResponse).setStatus(500);
+                    servletResponse.getOutputStream().write(mensage.getBytes());
                 }
             }
-            ((HttpServletResponse) servletResponse).setStatus(500);
-            servletResponse.getOutputStream().write(mensage.getBytes());
+            else
+            {
+                ((HttpServletResponse) servletResponse).setStatus(500);
+                servletResponse.getOutputStream().write(mensage.getBytes());
+            }
         }
     }
 }

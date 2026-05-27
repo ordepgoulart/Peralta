@@ -95,7 +95,8 @@
           </text>
         </svg>
 
-        <img src="../../public/logoPeralta.png" alt="Logo" />
+        <img class="logo-glow" src="../../public/logoPeralta.png" alt="" aria-hidden="true" />
+        <img class="logo-main" src="../../public/logoPeralta.png" alt="Logo Peralta 99" />
       </div>
       <div class="box-form">
         <AuthModal
@@ -142,11 +143,12 @@
       color: #f4d000;
       animation: piscarTexto 5.2s infinite ease-in-out;
       will-change: filter;
+      z-index: 2;
     }
 
     @keyframes piscarTexto
     {
-      0%, 8%, 18%, 22%, 58%, 62%, 82%, 100%
+      0%, 2%, 8%, 18%, 22%, 58%, 62%, 82%, 100%
       {
         filter:
             drop-shadow(0 0 6px rgba(255, 215, 0, 0.85))
@@ -161,6 +163,43 @@
             drop-shadow(0 0 6px rgba(160, 120, 0, 0.18))
             drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
       }
+    }
+
+    .logo {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60%;
+      min-height: 700px;
+    }
+
+    .logo-main,
+    .logo-glow {
+      position: absolute;
+      margin-top: 10rem;
+      width: 64rem;
+      max-width: none;
+    }
+
+    .logo-main {
+      margin-top: 10rem;
+      z-index: 2;
+      opacity: 0.88;
+      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+    }
+
+    .logo-glow {
+      z-index: 1;
+      opacity: 0.95;
+      filter:
+          blur(10px)
+          drop-shadow(0 0 28px rgba(243, 223, 19, 0.55))
+          drop-shadow(0 0 54px rgba(243, 223, 19, 0.32))
+          drop-shadow(0 0 82px rgba(141, 120, 255, 0.22));
+      transform: scale(1.03);
+      mix-blend-mode: screen;
+      pointer-events: none;
     }
 
     .texto-logo
@@ -191,20 +230,10 @@
 
     }
 
-    .logo
-    {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 60%;
-      min-height: 700px;
-    }
-
     .texto-curvado
     {
       position: absolute;
-      top: 40px;
+      top: -4rem;
       left: 50%;
       transform: translateX(-50%);
       width: 80rem;
@@ -212,13 +241,6 @@
       overflow: visible;
       z-index: 2;
       margin-top: 14rem;
-    }
-
-    img
-    {
-      margin-top: 10rem;
-      width: 64rem;
-      opacity: 0.75;
     }
 
     .texto-curvado text

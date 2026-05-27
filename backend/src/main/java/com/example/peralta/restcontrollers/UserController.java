@@ -53,8 +53,6 @@ public class UserController {
     @GetMapping("view-my-reports/{id}")
     public ResponseEntity<Object> getMyReports(@PathVariable Long id) {
         List<Denuncia> denuncias = denunciaService.findByUser(id);
-        if(denuncias.isEmpty())
-            return ResponseEntity.badRequest().body(new Erro("Nenhuma denuncia foi encontrado."));
         return ResponseEntity.ok(denuncias);
     }
 
