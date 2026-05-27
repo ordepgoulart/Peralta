@@ -52,7 +52,9 @@ public class UserController {
 
     @GetMapping("view-my-reports/{id}")
     public ResponseEntity<Object> getMyReports(@PathVariable Long id) {
+        System.out.println(id);
         List<Denuncia> denuncias = denunciaService.findByUser(id);
+        System.out.println(denuncias);
         return ResponseEntity.ok(denuncias);
     }
 

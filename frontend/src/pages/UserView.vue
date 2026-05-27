@@ -8,7 +8,9 @@
     AlertTriangle,
     Clock3,
     ShieldCheck,
-    LayoutGrid
+    LayoutGrid,
+    ShieldAlert,
+    InfoIcon
   } from 'lucide-vue-next';
 
   export default {
@@ -21,7 +23,9 @@
       AlertTriangle,
       Clock3,
       ShieldCheck,
-      LayoutGrid
+      ShieldAlert,
+      LayoutGrid,
+      InfoIcon
     },
     data() {
       return {
@@ -36,6 +40,8 @@
         alta: 0,
         media: 0,
         baixa: 0,
+        sem: 0,
+        muito : 0,
         filtro: 'T',
         busca: '',
         colunasModal : [],
@@ -57,12 +63,8 @@
       aplicarFiltros() {
         let lista = [...this.denuncias];
 
-        if (this.filtro === 'A') {
-          lista = lista.filter(d => d.urgencia === 3);
-        } else if (this.filtro === 'M') {
-          lista = lista.filter(d => d.urgencia === 2);
-        } else if (this.filtro === 'B') {
-          lista = lista.filter(d => d.urgencia === 1);
+        if(this.filtro !== 0){
+          lista = lista.filter(d => d.urgencia === this.filtro);
         }
 
         if (this.busca?.trim()) {
@@ -102,9 +104,11 @@
 
       atualizarResumo() {
         this.totais = this.denuncias.length;
-        this.alta = this.denuncias.filter(d => d.urgencia === 3).length;
-        this.media = this.denuncias.filter(d => d.urgencia === 2).length;
-        this.baixa = this.denuncias.filter(d => d.urgencia === 1).length;
+        this.muito = this.denuncias.filter(d => d.urgencia === 5).length;
+        this.alta = this.denuncias.filter(d => d.urgencia === 4).length;
+        this.media = this.denuncias.filter(d => d.urgencia === 3).length;
+        this.baixa = this.denuncias.filter(d => d.urgencia === 2).length;
+        this.sem = this.denuncias.filter(d => d.urgencia === 1).length;
       },
 
       async buscarOrgaos() {
@@ -122,33 +126,47 @@
       filtrosResumo() {
         return [
           {
-            valor: 'A',
-            label: 'Alta Urgência',
-            total: this.alta,
+            valor: 5,
+            label: 'Muito  Urgente',
+            total: this.muito,
             variant: 'danger',
             icon: 'AlertTriangle',
           },
           {
-            valor: 'M',
+            valor: 4,
+            label: 'Alta Urgência',
+            total: this.alta,
+            variant: 'alert',
+            icon: 'ShieldAlert'
+          },
+          {
+            valor: 3,
             label: 'Média Urgência',
             total: this.media,
             variant: 'warning',
             icon: 'Clock3'
           },
           {
-            valor: 'B',
-            label: 'Baixa Urgência',
+            valor: 2,
+            label: 'Baixa urgência',
             total: this.baixa,
-            variant: 'success',
+            variant: 'neutral',
             icon: 'ShieldCheck'
           },
           {
-            valor: 'T',
+            valor: 1,
+            label: 'Sem urgência',
+            total: this.sem,
+            variant: 'success',
+            icon: 'InfoIcon'
+          },
+          {
+            valor: 0,
             label: 'Total de denúncias',
             total: this.totais,
             variant: 'neutral',
             icon: 'LayoutGrid'
-          }
+          },
         ]
       },
       async buscarTipos() {
@@ -214,6 +232,7 @@
         await this.buscarTipos();
         await this.buscarMinhasDenuncias(usuario.id);
 
+        console.log(this.denuncias)
         this.listraFiltrada = this.denuncias;
 
         this.recarregar = setInterval(async () => {
@@ -975,6 +994,20 @@
 
 .summary-card--neutral .summary-card__glow {
   background: rgba(168, 151, 255, 0.26);
+}
+
+.summary-card--alert .summary-value,
+.summary-card--alert .summary-card__icon {
+  color: #FF6D00;
+}
+
+.summary-card--alert .summary-card__icon {
+  background: rgba(255, 109, 0, 0.10);
+  border-color: rgba(255, 109, 0, 0.18);
+}
+
+.summary-card--alert .summary-card__glow {
+  background: rgba(255, 109, 0, 0.26);
 }
 
 @media (max-width: 720px) {

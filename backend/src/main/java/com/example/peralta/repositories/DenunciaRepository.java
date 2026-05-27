@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface DenunciaRepository extends JpaRepository<Denuncia,Long> {
 
-    @Query(value = "SELECT * FROM denuncias WHERE den_id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM denuncias WHERE usu_id = :id", nativeQuery = true)
     public List<Denuncia> getByUserId(@Param("id") Long id);
 }
