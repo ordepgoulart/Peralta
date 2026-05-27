@@ -3,6 +3,7 @@
   import api from '../service/api.js';
   import FeedbackView from "../components/FeedbackView.vue";
   import StripSlideVertical from "../components/ui/StripSlideVertical.vue";
+  import TableList from "../components/TableList.vue";
   import {
     AlertTriangle,
     Clock3,
@@ -14,6 +15,7 @@
     name: "UserView",
     components: {
       DenunciaCard,
+      TableList,
       StripSlideVertical,
       FeedbackView,
       AlertTriangle,
@@ -23,6 +25,7 @@
     },
     data() {
       return {
+        showModal: false,
         recarregar: null,
         listaOrgaos: [],
         listaTipos: [],
@@ -35,6 +38,9 @@
         baixa: 0,
         filtro: 'T',
         busca: '',
+        colunasModal : [],
+        listaModal : [],
+        tituloModal : '',
       };
     },
     methods : {
@@ -70,6 +76,24 @@
         }
 
         this.listraFiltrada = lista;
+      },
+
+      abrirModalOrgao(){
+        this.listaModal = this.listaOrgaos;
+        this.colunasModal = [
+          { key: 'nome', label: 'Nome' },
+        ];
+        this.tituloModal = "Lista de Órgãos"
+        this.showModal = true;
+      },
+
+      abrirModalTipos(){
+        this.listaModal = this.listaTipos;
+        this.colunasModal = [
+          { key: 'nome', label: 'Nome' },
+        ];
+        this.tituloModal = "Lista de Tipos"
+        this.showModal = true;
       },
 
       fecharFeedback() {
@@ -139,12 +163,6 @@
           }
         })
       },
-      filtro(valor){
-        this.filtro = valor;
-      },
-      busca(valor){
-        this.busca = valor;
-      },
       async abrirFeedback(denuncia) {
         await api.get(`/apis/basic/get-feedback/${denuncia.id}`)
          .then(response => {
@@ -183,24 +201,31 @@
         this.$router.push("/login");
       }
     },
-    async created(){
-      const usuario = JSON.parse(localStorage.getItem("usuario"));
-      console.log(usuario.id);
-      if(!usuario){
-        this.$toast.error("Faça login para acessar o painel do cidadão.");
-        this.$router.push("/login");
-      }
-      else
-      {
+    async mounted() {
+      try {
+        const usuario = JSON.parse(localStorage.getItem("usuario") || "null");
+        const token = localStorage.getItem("Authorization");
+
+        if (!usuario || !usuario.id || !token) {
+          throw new Error("Usuário ou token ausente");
+        }
+
         await this.buscarOrgaos();
         await this.buscarTipos();
         await this.buscarMinhasDenuncias(usuario.id);
+
         this.listraFiltrada = this.denuncias;
-        this.recarregar = setInterval(async () =>{
+
+        this.recarregar = setInterval(async () => {
           await this.buscarOrgaos();
           await this.buscarTipos();
           await this.buscarMinhasDenuncias(usuario.id);
-        }, 2 * 60 * 1000)
+        }, 2 * 60 * 1000);
+      } catch (error) {
+        localStorage.removeItem("Authorization");
+        localStorage.removeItem("usuario");
+        this.$toast.error("Faça login para acessar o painel do cidadão novamente.");
+        this.$router.push("/login");
       }
     }
   }
@@ -235,8 +260,8 @@
       </div>
 
       <nav class="topbar__nav">
-        <button class="nav-link" type="button">Listar Tipos</button>
-        <button class="nav-link" type="button">Listar Órgãos</button>
+        <button class="nav-link" type="button" @click="abrirModalTipos">Listar Tipos</button>
+        <button class="nav-link" type="button" @click="abrirModalOrgao">Listar Órgãos</button>
       </nav>
 
       <button class="danger-action" type="button" @click="logout">Deslogar</button>
@@ -331,6 +356,14 @@
         :feedback="feedback"
         @close="fecharFeedback"
     />
+
+    <TableList
+        :show="showModal"
+        :title="tituloModal"
+        :columns="colunasModal"
+        :dados="listaModal"
+        @close="showModal = false"
+    />
   </section>
 </template>
 
@@ -422,7 +455,7 @@
 }
 
 .brand-mark img{
-  width: 8rem;
+  width: 4rem;
   opacity: 0.8;
   box-shadow-blur: 1px 1px var(--yellow);
 }

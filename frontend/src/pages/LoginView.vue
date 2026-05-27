@@ -22,6 +22,7 @@
                 .then((res) => {
                 if(res.status === 200){
                   localStorage.setItem("Authorization", res.data.token);
+                  localStorage.setItem("usuario", JSON.stringify({ id: res.data.id , nome : dados.email }));
                   this.$toast.success("Usuário logado com sucesso!");
                   if(res.data.nivel == 1)
                     this.$router.push("/admin");
@@ -178,7 +179,7 @@
     .logo-glow {
       position: absolute;
       margin-top: 10rem;
-      width: 64rem;
+      width: 44rem;
       max-width: none;
     }
 
