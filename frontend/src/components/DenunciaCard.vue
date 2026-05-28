@@ -14,6 +14,7 @@
                 <p class="card-text">
                     {{ truncatedText }}
                 </p>
+
             </div>
         </article>
     </div>
@@ -22,7 +23,7 @@
 <script>
 export default
 {
-    name: 'DenunciaCard',
+    name: 'DenunciaCardAdmin',
     props:
         {
             denuncia:

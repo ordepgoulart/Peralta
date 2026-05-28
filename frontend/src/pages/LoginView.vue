@@ -22,7 +22,7 @@
                 .then((res) => {
                 if(res.status === 200){
                   localStorage.setItem("Authorization", res.data.token);
-                  localStorage.setItem("usuario", JSON.stringify({ id: res.data.id , nome : dados.email }));
+                  localStorage.setItem("usuario", JSON.stringify({ id: res.data.id , nome : dados.email, nivel : res.data.nivel }));
                   this.$toast.success("Usuário logado com sucesso!");
                   if(res.data.nivel == 1)
                     this.$router.push("/admin");

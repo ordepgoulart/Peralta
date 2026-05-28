@@ -24,6 +24,10 @@
                         <span class="info-label">Tipo</span>
                         <strong>{{ denuncia?.tipo?.nome || 'Não informado' }}</strong>
                     </div>
+                  <div class="info-item" v-if="adminPage">
+                    <span class="info-label">Usuário</span>
+                    <strong>{{ denuncia?.usuario?.cpf || 'Não informado' }}</strong>
+                  </div>
                 </div>
                 <div class="content-block">
                     <span class="info-label">Descrição Detalhada</span>
@@ -53,6 +57,10 @@ export default
     name: "DetalhesDenunciaModal",
     props:
         {
+            adminPage: {
+              type: Boolean,
+              default: false
+            },
             show:
                 {
                     type: Boolean,

@@ -11,6 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +63,11 @@ public class AdminController {
     }
 
     @PostMapping("add-institution")
-    public ResponseEntity<Object> addInstitution(@RequestParam("nome") String nome)
+    public ResponseEntity<Object> addInstitution(@RequestBody Orgao orgao)
     {
-        if(nome == null || nome.isEmpty())
-            return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : "  + "NOME IS REQUIRED"));
-        Orgao orgao = new Orgao(nome);
+        System.out.println(orgao.getNome());
+        if(orgao == null ||  orgao.getNome() == null || orgao.getNome().isEmpty())
+            return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : NOME IS REQUIRED"));
         orgao = orgaoService.save(orgao);
         if(orgao != null)
             return ResponseEntity.ok(orgao);
@@ -72,11 +76,10 @@ public class AdminController {
     }
 
     @PutMapping("update-institution")
-    public ResponseEntity<Object> updateInstitution(@RequestParam("nome") String nome, @RequestParam("id") Long id)
+    public ResponseEntity<Object> updateInstitution(@RequestBody Orgao orgao)
     {
-        if(nome == null || nome.isEmpty() || id == null)
-            return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : "  + (id == null ? "ID IS REQUIRED" : "NOME IS REQUIRED")));
-        Orgao orgao = new Orgao(id,nome);
+        if(orgao == null ||  orgao.getNome() == null || orgao.getNome().isEmpty() || orgao.getId() == null || orgao.getId() == 0L)
+            return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : "  + (orgao.getId() == null || orgao.getId() == 0L ? "ID IS REQUIRED" : "NOME IS REQUIRED")));
         orgao = orgaoService.save(orgao);
         if(orgao != null)
             return ResponseEntity.ok(orgao);
@@ -94,11 +97,42 @@ public class AdminController {
     @DeleteMapping("delete-report/{id}")
     public ResponseEntity<Object> deleteReportById(@PathVariable Long id)
     {
+        System.out.println("TO AQUI");
+        Denuncia denuncia = denunciaService.findById(id);
+
+        if (denuncia == null)
+        {
+            return ResponseEntity.badRequest().body(new Erro("Denúncia não encontrada"));
+        }
+
+        final String UPLOAD_FOLDER = System.getProperty("user.dir") + "/uploads/";
+
+        if (denuncia.getFotos() != null)
+        {
+            System.out.println("ENTREI");
+            for (Foto foto : denuncia.getFotos())
+            {
+                try
+                {
+                    Path path = Paths.get(UPLOAD_FOLDER, foto.getArquivo());
+                    System.out.println("Apagando: " + path.toAbsolutePath());
+                    Files.deleteIfExists(path);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         boolean ret = denunciaService.delete(id);
+
         if (ret)
+        {
             return ResponseEntity.ok("Denúncia deletada com sucesso");
-        else
-            return ResponseEntity.badRequest().body(new Erro("Um erro ocorreu e não foi possível deletar a denúncia"));
+        }
+
+        return ResponseEntity.badRequest().body(new Erro("Um erro ocorreu e não foi possível deletar a denúncia"));
     }
 
     @PostMapping("add-feedback")
@@ -119,15 +153,26 @@ public class AdminController {
     }
 
     @PostMapping("add-type")
-    public ResponseEntity<Object> addType(@RequestParam("nome") String nome)
+    public ResponseEntity<Object> addType(@RequestBody Tipo tipo)
     {
-        if(nome == null || nome.isEmpty())
+        if(tipo.getNome() == null || tipo.getNome().isEmpty())
             return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : "  + "NOME IS REQUIRED"));
-        Tipo tipo = new Tipo(nome);
         tipo = tipoService.save(tipo);
         if(tipo != null)
             return ResponseEntity.ok(tipo);
         return ResponseEntity.badRequest().body(new Erro("Não foi possível inserir o tipo de problema especificado."));
+
+    }
+
+    @PutMapping("update-type")
+    public ResponseEntity<Object> updateType(@RequestBody Tipo tipo)
+    {
+        if(tipo.getNome() == null || tipo.getNome().isEmpty())
+            return ResponseEntity.badRequest().body(new Erro("Todos os dados devem ser fornecidos : NOME IS REQUIRED"));
+        tipo = tipoService.save(tipo);
+        if(tipo != null)
+            return ResponseEntity.ok(tipo);
+        return ResponseEntity.badRequest().body(new Erro("Não foi possível alterar o tipo de problema especificado."));
 
     }
 
@@ -143,8 +188,7 @@ public class AdminController {
     @GetMapping("all-types")
     public ResponseEntity<Object> getAllTypes ()
     {
-        List<Tipo> tipoList = new ArrayList<Tipo>();
-        tipoList = tipoService.findAll();
+        List<Tipo> tipoList = tipoService.findAll();
         return ResponseEntity.ok(tipoList);
     }
 

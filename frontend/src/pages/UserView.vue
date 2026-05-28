@@ -611,9 +611,9 @@ export default
 
 .brand-mark img
 {
-    width: 64px;
-    height: 64px;
-    opacity: 0.8;
+  width: 72px;
+  height: 56px;
+  opacity: 0.8;
 }
 
 .brand-copy
