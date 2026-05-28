@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update" />
+    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada.">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/forms/Select.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/forms/SelectField.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/entities/Foto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/entities/Foto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/data/Manager.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/data/Manager.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/forms/FormDenuncia.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/forms/Form.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/forms/InputFile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/forms/InputFile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/forms/InputText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/forms/InputText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/RowDivision.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/forms/RowDivision.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ui/Button.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ui/Button.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/Validator.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/Validator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peraltadb.sql" beforeDir="false" afterPath="$PROJECT_DIR$/peraltadb.sql" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,12 +43,12 @@
     &quot;assignee&quot;: &quot;ordepgoulart&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ordepgoulart/Peralta.git",
-    "accountId": "ef193842-684c-492d-8b16-c1c979299c9d"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ordepgoulart/Peralta.git&quot;,
+    &quot;accountId&quot;: &quot;ef193842-684c-492d-8b16-c1c979299c9d&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -127,14 +142,14 @@
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/mrs/WebstormProjects/Peralta/frontend",
+    "last_opened_file_path": "/home/mrs/WebstormProjects/Peralta",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "C:\\Users\\Pedro\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "/opt/webstorm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -165,10 +180,26 @@
       <workItem from="1777383574157" duration="49000" />
       <workItem from="1779803495234" duration="4302000" />
       <workItem from="1779932383988" duration="77000" />
+      <workItem from="1779946937638" duration="792000" />
+      <workItem from="1779970003448" duration="22000" />
+      <workItem from="1779979981414" duration="376000" />
     </task>
+    <task id="LOCAL-00001" summary="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada.">
+      <option name="closed" value="true" />
+      <created>1779947125003</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1779947125003</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada." />
   </component>
 </project>

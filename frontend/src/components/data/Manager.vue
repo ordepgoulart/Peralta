@@ -3,7 +3,7 @@
     import InputText from '../forms/InputText.vue';
     import Table from "./Table.vue";
     import GenericModal from "../ui/Modal.vue";
-    import RowDivision from "../layout/RowDivision.vue";
+    import RowDivision from "../forms/RowDivision.vue";
     import { BIconPlus } from 'bootstrap-icons-vue';
 
     const props = defineProps(

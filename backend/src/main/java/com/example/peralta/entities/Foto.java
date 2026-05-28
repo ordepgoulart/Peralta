@@ -3,19 +3,19 @@ package com.example.peralta.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="fotos")
+@Table(name = "fotos")
 public class Foto
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="foto_id")
+    @Column(name = "foto_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="den_id")
+    @JoinColumn(name = "den_id")
     private Denuncia denuncia;
 
-    @Column(name="foto_arq")
+    @Column(name = "foto_arq")
     private String arquivo;
 
     public Foto(Long id, Denuncia denuncia, String arquivo)
@@ -27,17 +27,17 @@ public class Foto
 
     public Foto(String arquivo)
     {
-        this(0L, null, arquivo);
+        this(null, null, arquivo);
     }
 
     public Foto(Denuncia denuncia, String arquivo)
     {
-        this(0L, denuncia, arquivo);
+        this(null, denuncia, arquivo);
     }
 
     public Foto()
     {
-        this(0L, null, "");
+        this(null, null, "");
     }
 
     public Long getId()

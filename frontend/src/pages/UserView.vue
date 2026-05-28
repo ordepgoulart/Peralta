@@ -1,10 +1,120 @@
+<template>
+    <div class="page-decor">
+        <div class="page-side page-side--left">
+            <StripSlideVertical height="100%" />
+        </div>
+        <div class="page-side page-side--right">
+            <StripSlideVertical height="100%" />
+        </div>
+    </div>
+    <section class="citizen-page">
+        <div class="page-glow page-glow--left"></div>
+        <div class="page-glow page-glow--right"></div>
+        <header class="topbar">
+            <div class="topbar__brand">
+                <div class="brand-mark">
+                    <img src="../../public/logoPeralta.png" alt="Logo" />
+                </div>
+                <div class="brand-copy">
+                    <span class="brand-name">Peralta 99</span>
+                    <span class="brand-subtitle">Painel do cidadão</span>
+                </div>
+            </div>
+            <nav class="topbar__nav">
+                <button class="nav-link" type="button" @click="abrirModalTipos">Listar Tipos</button>
+                <button class="nav-link" type="button" @click="abrirModalOrgao">Listar Órgãos</button>
+            </nav>
+            <button class="danger-action" type="button" @click="logout">Deslogar</button>
+        </header>
+        <section class="hero-panel">
+            <span class="eyebrow">Painel do cidadão</span>
+            <h1>Minhas denúncias</h1>
+            <p>
+                Acompanhe o andamento das denúncias enviadas, filtre por status e clique nos cards para visualizar detalhes e respostas.
+            </p>
+        </section>
+        <section class="citizen-summary-grid">
+            <div class="summary-filters">
+                <button
+                    v-for="item in filtrosResumo()"
+                    :key="item.valor"
+                    class="summary-card"
+                    :class="[ `summary-card--${item.variant}`, { 'summary-card--active': filtro === item.valor } ]"
+                    type="button"
+                    :aria-pressed="filtro === item.valor ? 'true' : 'false'"
+                    @click="filtroResumo(item.valor)"
+                >
+                    <div class="summary-card__body">
+                        <span class="summary-label">{{ item.label }}</span>
+                        <strong class="summary-value">{{ item.total }}</strong>
+                    </div>
+                    <div class="summary-card__icon">
+                        <component :is="item.icon" :size="24" :stroke-width="2" />
+                    </div>
+                    <span class="summary-card__glow"></span>
+                </button>
+            </div>
+        </section>
+        <section class="toolbar-shell">
+            <div class="toolbar-panel">
+                <div class="search-container">
+                    <InputText
+                        id="search-report"
+                        :modelValue="busca"
+                        placeholder="Buscar por título, tipo ou órgão"
+                        @update:modelValue="atualizarBusca"
+                    >
+                        <template #icon>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
+                                <path d="M10.5 18a7.5 7.5 0 1 1 5.303-2.197L21 21" />
+                            </svg>
+                        </template>
+                    </InputText>
+                </div>
+                <div class="toolbar-right">
+                    <button class="primary-action" type="button" @click="showForm = true">Nova denúncia</button>
+                </div>
+            </div>
+        </section>
+        <section class="reports-shell">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Monitoramento</span>
+                    <h2>Ocorrências cadastradas</h2>
+                </div>
+                <span class="section-caption">
+                    Visualização central das denúncias registradas
+                </span>
+            </div>
+            <div class="reports-grid">
+                <DenunciaCard
+                    v-if="listraFiltrada.length > 0"
+                    v-for="denuncia in listraFiltrada"
+                    :key="denuncia.id"
+                    :denuncia="denuncia"
+                    @select="abrirDetalhes"
+                />
+                <div v-else class="feedback-hint">
+                    Nenhuma denúncia encontrada. Ajuste os filtros ou envie uma nova denúncia.
+                </div>
+            </div>
+        </section>
+
+        <DetalhesDenunciaModal :show="showDetalhes" :denuncia="denunciaSelecionada" :feedback="feedbackSelecionado" @close="fecharDetalhes" />
+        <Form :show="showForm" title="Nova Denúncia" :schema="formSchema" @close="showForm = false" @confirm="enviarDenuncia" />
+        <TableList :show="showModal" :title="tituloModal" :columns="colunasModal" :dados="listaModal" @close="showModal = false" />
+    </section>
+</template>
+
 <script>
 import DenunciaCard from '../components/DenunciaCard.vue';
 import api from '../service/api.js';
 import DetalhesDenunciaModal from "../components/DetalhesDenunciaModal.vue";
-import FormDenuncia from "../components/forms/FormDenuncia.vue";
+import Form from "../components/forms/Form.vue";
+import InputText from "../components/forms/InputText.vue";
 import StripSlideVertical from "../components/ui/StripSlideVertical.vue";
 import TableList from "../components/TableList.vue";
+import Validator from "../utils/Validator.js";
 import
 {
     AlertTriangle,
@@ -24,7 +134,8 @@ export default
             TableList,
             StripSlideVertical,
             DetalhesDenunciaModal,
-            FormDenuncia,
+            Form,
+            InputText,
             AlertTriangle,
             Clock3,
             ShieldCheck,
@@ -38,7 +149,6 @@ export default
             showModal: false,
             showDetalhes: false,
             showForm: false,
-            recarregar: null,
             listaOrgaos: [],
             listaTipos: [],
             denuncias: [],
@@ -51,13 +161,103 @@ export default
             baixa: 0,
             sem: 0,
             muito: 0,
-            filtro: 'T',
+            filtro: 0,
             busca: '',
             colunasModal: [],
             listaModal: [],
-            tituloModal: '',
+            tituloModal: ''
         };
     },
+    computed:
+        {
+            formSchema()
+            {
+                return [
+                    {
+                        fields:
+                            [
+                                {
+                                    name: "titulo",
+                                    label: "Título",
+                                    type: "text",
+                                    placeholder: "Informe o título da denúncia",
+                                    validator: Validator.required,
+                                    required: true
+                                }
+                            ]
+                    },
+                    {
+                        fields:
+                            [
+                                {
+                                    name: "orgao",
+                                    label: "Órgão",
+                                    type: "select",
+                                    placeholder: "Selecione um órgão",
+                                    options: this.listaOrgaos.map(o => ({ id: o.id, nome: o.nome })),
+                                    validator: Validator.required,
+                                    required: true
+                                },
+                                {
+                                    name: "tipo",
+                                    label: "Tipo",
+                                    type: "select",
+                                    placeholder: "Selecione um tipo",
+                                    options: this.listaTipos.map(t => ({ id: t.id, nome: t.nome })),
+                                    validator: Validator.required,
+                                    required: true
+                                }
+                            ]
+                    },
+                    {
+                        fields:
+                            [
+                                {
+                                    name: "urgencia",
+                                    label: "Urgência",
+                                    type: "select",
+                                    placeholder: "Selecione a urgência",
+                                    options:
+                                        [
+                                            { id: 1, nome: "Baixa" },
+                                            { id: 2, nome: "Média" },
+                                            { id: 3, nome: "Alta" },
+                                            { id: 4, nome: "Muito Alta" },
+                                            { id: 5, nome: "Crítica" }
+                                        ],
+                                    validator: Validator.required,
+                                    required: true
+                                }
+                            ]
+                    },
+                    {
+                        fields:
+                            [
+                                {
+                                    name: "texto",
+                                    label: "Descrição",
+                                    type: "textarea",
+                                    placeholder: "Detalhe a situação ocorrida",
+                                    validator: Validator.required,
+                                    required: true
+                                }
+                            ]
+                    },
+                    {
+                        fields:
+                            [
+                                {
+                                    name: "fotosBase64",
+                                    label: "Imagens",
+                                    type: "file",
+                                    validator: Validator.required,
+                                    required: true
+                                }
+                            ]
+                    }
+                ];
+            }
+        },
     methods:
         {
             filtroResumo(valor)
@@ -236,7 +436,14 @@ export default
                     {
                         if (response.status === 200)
                         {
-                            this.denuncias = response.data;
+                            this.denuncias = response.data.map(d =>
+                            {
+                                if (d.data && d.data.includes(' '))
+                                {
+                                    d.data = d.data.replace(' ', 'T');
+                                }
+                                return d;
+                            });
                             this.atualizarResumo();
                             this.aplicarFiltros();
                         }
@@ -257,12 +464,15 @@ export default
                         throw new Error("Usuário não encontrado.");
                     }
 
+                    const d = new Date();
+                    const dataLocal = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
                     const payload =
                         {
                             titulo: formDados.titulo,
                             texto: formDados.texto,
                             urgencia: parseInt(formDados.urgencia),
-                            data: new Date().toISOString().split("T")[0],
+                            data: dataLocal,
                             orgao:
                                 {
                                     id: formDados.orgao
@@ -275,7 +485,7 @@ export default
                                 {
                                     id: usuario.id
                                 },
-                            fotos: formDados.fotosBase64.map(base64 => ({ arquivo: base64 }))
+                            fotos: (formDados.fotosBase64 || []).map(base64 => ({ arquivo: base64 }))
                         };
 
                     const response = await api.post("/apis/basic/save-report", payload);
@@ -316,13 +526,6 @@ export default
             await this.buscarMinhasDenuncias(usuario.id);
 
             this.listraFiltrada = this.denuncias;
-
-            this.recarregar = setInterval(async () =>
-            {
-                await this.buscarOrgaos();
-                await this.buscarTipos();
-                await this.buscarMinhasDenuncias(usuario.id);
-            }, 2 * 60 * 1000);
         }
         catch (error)
         {
@@ -335,128 +538,6 @@ export default
 };
 </script>
 
-<template>
-    <div class="page-decor">
-        <div class="page-side page-side--left">
-            <StripSlideVertical height="100%" />
-        </div>
-        <div class="page-side page-side--right">
-            <StripSlideVertical height="100%" />
-        </div>
-    </div>
-    <section class="citizen-page">
-        <div class="page-glow page-glow--left"></div>
-        <div class="page-glow page-glow--right"></div>
-        <header class="topbar">
-            <div class="topbar__brand">
-                <div class="brand-mark">
-                    <img src="../../public/logoPeralta.png" alt="Logo" />
-                </div>
-                <div class="brand-copy">
-                    <span class="brand-name">Peralta 99</span>
-                    <span class="brand-subtitle">Painel do cidadão</span>
-                </div>
-            </div>
-            <nav class="topbar__nav">
-                <button class="nav-link" type="button" @click="abrirModalTipos">Listar Tipos</button>
-                <button class="nav-link" type="button" @click="abrirModalOrgao">Listar Órgãos</button>
-            </nav>
-            <button class="danger-action" type="button" @click="logout">Deslogar</button>
-        </header>
-        <section class="hero-panel">
-            <span class="eyebrow">Painel do cidadão</span>
-            <h1>Minhas denúncias</h1>
-            <p>
-                Acompanhe o andamento das denúncias enviadas, filtre por status e clique nos cards para visualizar detalhes e respostas.
-            </p>
-        </section>
-        <section class="citizen-summary-grid">
-            <div class="summary-filters">
-                <button
-                    v-for="item in filtrosResumo()"
-                    :key="item.valor"
-                    class="summary-card"
-                    :class="[ `summary-card--${item.variant}`, { 'summary-card--active': filtro === item.valor } ]"
-                    type="button"
-                    :aria-pressed="filtro === item.valor ? 'true' : 'false'"
-                    @click="filtroResumo(item.valor)"
-                >
-                    <div class="summary-card__body">
-                        <span class="summary-label">{{ item.label }}</span>
-                        <strong class="summary-value">{{ item.total }}</strong>
-                    </div>
-                    <div class="summary-card__icon">
-                        <component :is="item.icon" :size="24" :stroke-width="2" />
-                    </div>
-                    <span class="summary-card__glow"></span>
-                </button>
-            </div>
-        </section>
-        <section class="toolbar-shell">
-            <div class="toolbar-panel">
-                <label class="search-box" for="search-report">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M10.5 18a7.5 7.5 0 1 1 5.303-2.197L21 21" />
-                    </svg>
-                    <input
-                        id="search-report"
-                        type="text"
-                        :value="busca"
-                        @input="atualizarBusca($event.target.value)"
-                        placeholder="Buscar por título, tipo ou órgão"
-                    />
-                </label>
-                <div class="toolbar-right">
-                    <button class="primary-action" type="button" @click="showForm = true">Nova denúncia</button>
-                </div>
-            </div>
-        </section>
-        <section class="reports-shell">
-            <div class="section-heading">
-                <div>
-                    <span class="section-kicker">Monitoramento</span>
-                    <h2>Ocorrências cadastradas</h2>
-                </div>
-                <span class="section-caption">
-                    Visualização central das denúncias registradas
-                </span>
-            </div>
-            <div class="reports-grid">
-                <DenunciaCard
-                    v-if="listraFiltrada.length > 0"
-                    v-for="denuncia in listraFiltrada"
-                    :key="denuncia.id"
-                    :denuncia="denuncia"
-                    @select="abrirDetalhes"
-                />
-                <div v-else class="feedback-hint">
-                    Nenhuma denúncia encontrada. Ajuste os filtros ou envie uma nova denúncia.
-                </div>
-            </div>
-        </section>
-        <DetalhesDenunciaModal
-            :show="showDetalhes"
-            :denuncia="denunciaSelecionada"
-            :feedback="feedbackSelecionado"
-            @close="fecharDetalhes"
-        />
-        <FormDenuncia
-            :show="showForm"
-            :orgaos="listaOrgaos"
-            :tipos="listaTipos"
-            @close="showForm = false"
-            @confirm="enviarDenuncia"
-        />
-        <TableList
-            :show="showModal"
-            :title="tituloModal"
-            :columns="colunasModal"
-            :dados="listaModal"
-            @close="showModal = false"
-        />
-    </section>
-</template>
-
 <style scoped>
 .citizen-page
 {
@@ -466,16 +547,11 @@ export default
     --panel-strong: rgba(18, 18, 24, 0.96);
     --panel-soft: rgba(255, 255, 255, 0.03);
     --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 230, 0, 0.22);
     --text: #f5f5f7;
     --text-soft: #c8c8d1;
     --text-muted: #8e8e99;
     --yellow: #f3df13;
-    --yellow-soft: rgba(243, 223, 19, 0.10);
     --red: #ff4d57;
-    --red-soft: rgba(255, 77, 87, 0.12);
-    --purple: #8d78ff;
-    --purple-soft: rgba(141, 120, 255, 0.12);
     min-height: 100vh;
     padding: 28px;
     color: var(--text);
@@ -515,16 +591,15 @@ export default
 {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 24px;
     padding: 16px 22px;
     background: linear-gradient(180deg, rgba(14, 14, 18, 0.88), rgba(10, 10, 14, 0.74));
     border: 1px solid var(--border);
     border-radius: 24px;
     backdrop-filter: blur(14px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .topbar__brand
@@ -534,22 +609,10 @@ export default
     gap: 14px;
 }
 
-.brand-mark
+.brand-mark img
 {
     width: 64px;
     height: 64px;
-    border-radius: 16px;
-    display: flex;
-    place-items: center;
-    align-items: center;
-    justify-content: center;
-    color: var(--yellow);
-    box-shadow: 0 0 24px rgba(243, 223, 19, 0.08);
-}
-
-.brand-mark img
-{
-    width: 4rem;
     opacity: 0.8;
 }
 
@@ -575,7 +638,6 @@ export default
 .topbar__nav
 {
     display: flex;
-    justify-content: center;
     gap: 10px;
 }
 
@@ -618,7 +680,6 @@ export default
 {
     background: rgba(255, 77, 87, 0.8);
     color: #0a0a0a;
-    box-shadow: 0 0 0 4px rgba(255, 77, 87, 0.06);
 }
 
 .hero-panel
@@ -627,7 +688,6 @@ export default
     z-index: 1;
     display: grid;
     gap: 14px;
-    padding: 18px 4px 4px;
 }
 
 .eyebrow,
@@ -646,7 +706,6 @@ export default
 .hero-panel h1
 {
     margin: 0;
-    max-width: 16ch;
     font-size: clamp(3rem, 6vw, 5rem);
     line-height: 0.94;
     letter-spacing: -0.05em;
@@ -662,84 +721,36 @@ export default
     line-height: 1.75;
 }
 
-.citizen-summary-grid
+.toolbar-shell
 {
     position: relative;
     z-index: 1;
-}
-
-.toolbar-shell,
-.reports-shell
-{
-    position: relative;
-    z-index: 1;
-    padding: 50px;
 }
 
 .toolbar-panel
 {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 16px;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     padding: 18px;
     background: linear-gradient(180deg, rgba(15, 15, 20, 0.92), rgba(10, 10, 14, 0.94));
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 26px;
-    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-.search-box
+.search-container
 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 56px;
-    padding: 0 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01)), rgba(9, 9, 12, 0.95);
-    transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    flex: 1;
 }
 
-.search-box:focus-within
-{
-    border-color: rgba(243, 223, 19, 0.32);
-    box-shadow: 0 0 0 4px rgba(243, 223, 19, 0.06);
-    background: rgba(12, 12, 16, 0.98);
-}
-
-.search-box svg
+.search-icon
 {
     width: 18px;
     height: 18px;
     stroke: var(--yellow);
     stroke-width: 2;
     fill: none;
-    flex-shrink: 0;
-}
-
-.search-box input
-{
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--text);
-    font-size: 0.96rem;
-}
-
-.search-box input::placeholder
-{
-    color: var(--text-muted);
-}
-
-.toolbar-right
-{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
 }
 
 .primary-action
@@ -754,13 +765,11 @@ export default
     border: 1px solid rgba(243, 223, 19, 0.34);
     background: linear-gradient(180deg, #f3df13, #dbc500);
     color: #0a0a0a;
-    box-shadow: 0 10px 22px rgba(243, 223, 19, 0.18);
 }
 
 .primary-action:hover
 {
     transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(243, 223, 19, 0.22);
 }
 
 .reports-shell
@@ -771,16 +780,14 @@ export default
     background: linear-gradient(180deg, rgba(14, 14, 18, 0.90), rgba(10, 10, 14, 0.96));
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 28px;
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .section-heading
 {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
-    padding: 4px 4px 0;
 }
 
 .section-heading h2
@@ -803,7 +810,7 @@ export default
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
     min-height: 220px;
-    align-items: stretch;
+    padding: 20px 10px;
 }
 
 .feedback-hint
@@ -838,8 +845,6 @@ export default
     width: 84px;
     opacity: 0.18;
     filter: blur(6px);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, transparent 100%);
 }
 
 .page-side--left
@@ -863,43 +868,36 @@ export default
 .summary-card
 {
     position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 16px;
     width: 100%;
     min-height: 116px;
-    padding: 18px 18px 18px 20px;
+    padding: 18px 20px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 22px;
     background: linear-gradient(180deg, rgba(18, 18, 24, 0.96), rgba(12, 12, 16, 0.98));
     color: #f4f4f7;
-    text-align: left;
     cursor: pointer;
     overflow: hidden;
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    transition: transform 180ms ease, border-color 180ms ease;
 }
 
 .summary-card:hover
 {
     transform: translateY(-3px);
     border-color: rgba(255, 255, 255, 0.14);
-    box-shadow: 0 24px 42px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .summary-card--active
 {
     border-color: rgba(243, 223, 19, 0.30);
     background: linear-gradient(180deg, rgba(24, 24, 30, 0.98), rgba(14, 14, 18, 1));
-    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(243, 223, 19, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .summary-card__body
 {
-    position: relative;
-    z-index: 2;
     display: grid;
     gap: 10px;
 }
@@ -911,7 +909,6 @@ export default
     letter-spacing: 0.08em;
     color: #8c8c97;
     font-weight: 700;
-    line-height: 1.3;
 }
 
 .summary-value
@@ -920,13 +917,10 @@ export default
     line-height: 0.95;
     font-weight: 900;
     letter-spacing: -0.05em;
-    color: #f5f5f7;
 }
 
 .summary-card__icon
 {
-    position: relative;
-    z-index: 2;
     width: 58px;
     height: 58px;
     border-radius: 18px;
@@ -934,7 +928,6 @@ export default
     place-items: center;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .summary-card__icon svg
@@ -955,25 +948,12 @@ export default
     border-radius: 999px;
     filter: blur(36px);
     opacity: 0.16;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.summary-card--active .summary-label
-{
-    color: rgba(255, 245, 176, 0.86);
 }
 
 .summary-card--danger .summary-value,
 .summary-card--danger .summary-card__icon
 {
     color: #ff6671;
-}
-
-.summary-card--danger .summary-card__icon
-{
-    background: rgba(255, 102, 113, 0.08);
-    border-color: rgba(255, 102, 113, 0.16);
 }
 
 .summary-card--danger .summary-card__glow
@@ -987,12 +967,6 @@ export default
     color: #f3df13;
 }
 
-.summary-card--warning .summary-card__icon
-{
-    background: rgba(243, 223, 19, 0.08);
-    border-color: rgba(243, 223, 19, 0.16);
-}
-
 .summary-card--warning .summary-card__glow
 {
     background: rgba(243, 223, 19, 0.24);
@@ -1002,12 +976,6 @@ export default
 .summary-card--success .summary-card__icon
 {
     color: #d9d6c2;
-}
-
-.summary-card--success .summary-card__icon
-{
-    background: rgba(217, 214, 194, 0.08);
-    border-color: rgba(217, 214, 194, 0.14);
 }
 
 .summary-card--success .summary-card__glow
@@ -1021,12 +989,6 @@ export default
     color: #a897ff;
 }
 
-.summary-card--neutral .summary-card__icon
-{
-    background: rgba(168, 151, 255, 0.10);
-    border-color: rgba(168, 151, 255, 0.18);
-}
-
 .summary-card--neutral .summary-card__glow
 {
     background: rgba(168, 151, 255, 0.26);
@@ -1036,12 +998,6 @@ export default
 .summary-card--alert .summary-card__icon
 {
     color: #FF6D00;
-}
-
-.summary-card--alert .summary-card__icon
-{
-    background: rgba(255, 109, 0, 0.10);
-    border-color: rgba(255, 109, 0, 0.18);
 }
 
 .summary-card--alert .summary-card__glow
@@ -1061,7 +1017,8 @@ export default
 {
     .topbar
     {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .topbar__nav
@@ -1072,12 +1029,13 @@ export default
 
     .toolbar-panel
     {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .toolbar-right
+    .search-container
     {
-        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -1086,58 +1044,6 @@ export default
     .citizen-page
     {
         padding: 18px;
-        z-index: 1000;
-    }
-
-    .topbar,
-    .toolbar-panel,
-    .reports-shell
-    {
-        border-radius: 20px;
-    }
-
-    .topbar__nav,
-    .toolbar-right
-    {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .nav-link,
-    .danger-action,
-    .primary-action
-    {
-        width: 100%;
-    }
-
-    .section-heading
-    {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .summary-filters
-    {
-        grid-template-columns: 1fr;
-    }
-
-    .summary-card
-    {
-        min-height: 96px;
-        padding: 16px 16px 16px 18px;
-        border-radius: 18px;
-    }
-
-    .summary-card__icon
-    {
-        width: 50px;
-        height: 50px;
-        border-radius: 16px;
-    }
-
-    .summary-value
-    {
-        font-size: 1.8rem;
     }
 
     .reports-grid

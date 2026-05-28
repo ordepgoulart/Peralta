@@ -1,84 +1,56 @@
-export default class Validator
+export default class Masker
 {
-    static required(value)
+    static only_numbers(value = '')
     {
-        return value?.toString().trim().length > 0
-    }
-
-    static email(value = '')
-    {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-    }
-
-    static phone(value = '')
-    {
-        const digits = value.replace(/\D/g, '');
-
-        if (digits.length < 10 || digits.length > 11)
-            return false;
-
-        if (/^(\d)\1+$/.test(digits))
-            return false;
-
-        const ddd = parseInt(digits.substring(0, 2));
-
-        if (ddd < 11 || ddd > 99)
-            return false;
-
-        return true;
-    }
-
-    static min(length = 3)
-    {
-        return (value = '') =>
-        {
-            return value.length >= length
-        }
-    }
-
-    static max(length = 10)
-    {
-        return (value = '') => { return value.length <= length; }
+        return value.replace(/\D/g, '');
     }
 
     static cpf(value = '')
     {
-        value = value.replace(/\D/g, '');
+        value = Masker.only_numbers(value);
 
-        if (value.length !== 11)
-            return false;
+        return value
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+            .slice(0, 14);
+    }
 
-        if (/^(\d)\1+$/.test(value))
-            return false;
+    static phone(value = '')
+    {
+        value = Masker.only_numbers(value);
 
-        let sum = 0;
+        if (value.length <= 10)
+        {
+            return value
+                .replace(/^(\d{2})(\d)/, '($1) $2')
+                .replace(/(\d{4})(\d)/, '$1-$2')
+                .slice(0, 14);
+        }
 
-        for (let i = 0; i < 9; i++)
-            sum += Number(value[i]) * (10 - i);
-
-        let first = (sum * 10) % 11;
-
-        if (first === 10)
-            first = 0;
-
-        if (first !== Number(value[9]))
-            return false;
-
-        sum = 0;
-
-        for (let i = 0; i < 10; i++)
-            sum += Number(value[i]) * (11 - i);
-
-        let second = (sum * 10) % 11;
-
-        if (second === 10)
-            second = 0;
-
-        return second === Number(value[10]);
+        return value
+            .replace(/^(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d)/, '$1-$2')
+            .slice(0, 15);
     }
 
     static cep(value = '')
     {
-        return value.replace(/\D/g, '').length === 8
+        value = Masker.only_numbers(value);
+
+        return value
+            .replace(/^(\d{5})(\d)/, '$1-$2')
+            .slice(0, 9);
+    }
+
+    static currency(value = '')
+    {
+        value = Masker.only_numbers(value);
+
+        return new Intl.NumberFormat('pt-BR',
+            {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value / 100);
     }
 }
