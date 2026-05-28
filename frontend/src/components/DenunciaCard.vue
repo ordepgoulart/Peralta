@@ -1,180 +1,240 @@
 <template>
-  <article
-    class="denuncia-card denuncia-card--clickable"
-    :class="`denuncia-card--urgencia-${denuncia?.urgencia || 0}`"
-    @click="handleClick"
-  >
-    <div class="card-top">
-      <div class="status-group">
-        <span class="badge badge--tipo">
-          {{ denuncia?.tipo?.nome || 'Tipo não informado' }}
-        </span>
-
-        <span class="badge" :class="urgenciaClass">
-          {{ urgenciaLabel }}
-        </span>
-      </div>
-
-      <span class="card-date">
-        {{ formattedDate }}
-      </span>
+    <div class="denuncia-card-wrapper" @click="handleClick">
+        <div class="folder-tab"></div>
+        <article class="denuncia-card">
+            <div class="card-top">
+                <span class="badge" :class="urgenciaClass">
+                    {{ urgenciaLabel }}
+                </span>
+                <span class="card-date">
+                    {{ formattedDate }}
+                </span>
+            </div>
+            <div class="card-content">
+                <p class="card-text">
+                    {{ truncatedText }}
+                </p>
+            </div>
+        </article>
     </div>
-
-    <div class="card-gallery" v-if="hasFotos">
-      <img
-        class="gallery-cover"
-        :src="fotoPrincipalUrl"
-        :alt="`Foto da denúncia ${denuncia?.titulo || ''}`"
-      />
-
-      <div class="gallery-counter" v-if="fotoCount > 1">
-        +{{ fotoCount - 1 }} fotos
-      </div>
-    </div>
-
-    <div class="card-gallery card-gallery--empty" v-else>
-      <div class="gallery-placeholder">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm0 0 4 5 3-3 6 8" />
-          <circle cx="16.5" cy="8.5" r="1.5" />
-        </svg>
-        <span>Sem imagens</span>
-      </div>
-    </div>
-
-    <div class="card-content">
-      <h3 class="card-title">{{ denuncia?.titulo || 'Sem título' }}</h3>
-
-      <p class="card-text">
-        {{ denuncia?.texto || 'Sem descrição informada.' }}
-      </p>
-    </div>
-
-    <div class="card-meta">
-      <div class="meta-item">
-        <span class="meta-label">Órgão</span>
-        <strong>{{ denuncia?.orgao?.nome || 'Não informado' }}</strong>
-      </div>
-
-      <div class="meta-item">
-        <span class="meta-label">Autor</span>
-        <strong>{{ denuncia?.usuario?.nome || denuncia?.usuario?.email || 'Usuário' }}</strong>
-      </div>
-    </div>
-
-    <footer class="card-footer">
-      <div class="footer-left">
-        <span class="foto-chip">
-          {{ fotoCount }} {{ fotoCount === 1 ? 'foto' : 'fotos' }}
-        </span>
-      </div>
-
-      <div class="footer-right">
-        <span class="feedback-link">Ver feedback</span>
-        <span class="feedback-arrow">→</span>
-      </div>
-    </footer>
-  </article>
 </template>
 
 <script>
-export default {
-  name: 'DenunciaCard',
-  props: {
-    denuncia: {
-      type: Object,
-      required: true
-    },
-    imageBaseUrl: {
-      type: String,
-      default: '/uploads/'
-    }
-  },
-  emits: ['select'],
-  computed: {
-    formattedDate() {
-      if (!this.denuncia?.data) return 'Data não informada';
+export default
+{
+    name: 'DenunciaCard',
+    props:
+        {
+            denuncia:
+                {
+                    type: Object,
+                    required: true
+                }
+        },
+    emits:
+        [
+            'select'
+        ],
+    computed:
+        {
+            formattedDate()
+            {
+                if (!this.denuncia?.data)
+                {
+                    return 'Data não informada';
+                }
 
-      const data = new Date(this.denuncia.data);
-      if (Number.isNaN(data.getTime())) return this.denuncia.data;
+                const data = new Date(this.denuncia.data);
 
-      return data.toLocaleDateString('pt-BR');
-    },
-    urgenciaLabel() {
-      const mapa = {
-        1: 'Baixa urgência',
-        2: 'Média urgência',
-        3: 'Alta urgência'
-      };
-      return mapa[this.denuncia?.urgencia] || 'Sem urgência';
-    },
-    urgenciaClass() {
-      const mapa = {
-        1: 'badge--success',
-        2: 'badge--warning',
-        3: 'badge--danger'
-      };
-      return mapa[this.denuncia?.urgencia] || 'badge--neutral';
-    },
-    fotoCount() {
-      return Array.isArray(this.denuncia?.fotos) ? this.denuncia.fotos.length : 0;
-    },
-    hasFotos() {
-      return this.fotoCount > 0;
-    },
-    fotoPrincipalUrl() {
-      if (!this.hasFotos) return '';
+                if (Number.isNaN(data.getTime()))
+                {
+                    return this.denuncia.data;
+                }
 
-      const foto = this.denuncia.fotos[0];
-      const arquivo = foto?.arquivo || foto?.nome || foto?.url || '';
+                return data.toLocaleDateString('pt-BR');
+            },
+            urgenciaLabel()
+            {
+                const mapa =
+                    {
+                        1: 'Baixa urgência',
+                        2: 'Média urgência',
+                        3: 'Alta urgência',
+                        4: 'Muito Alta',
+                        5: 'Crítica'
+                    };
 
-      if (!arquivo) return '';
-      if (arquivo.startsWith('http://') || arquivo.startsWith('https://')) return arquivo;
+                return mapa[this.denuncia?.urgencia] || 'Sem urgência';
+            },
+            urgenciaClass()
+            {
+                const mapa =
+                    {
+                        1: 'badge--neutral',
+                        2: 'badge--success',
+                        3: 'badge--warning',
+                        4: 'badge--alert',
+                        5: 'badge--danger'
+                    };
 
-      return `${this.imageBaseUrl}${arquivo}`;
-    }
-  },
-  methods: {
-    handleClick() {
-      this.$emit('select', this.denuncia);
-    }
-  }
+                return mapa[this.denuncia?.urgencia] || 'badge--neutral';
+            },
+            truncatedText()
+            {
+                const texto = this.denuncia?.texto || 'Sem descrição informada.';
+
+                if (texto.length > 90)
+                {
+                    return texto.substring(0, 90) + '...';
+                }
+
+                return texto;
+            }
+        },
+    methods:
+        {
+            handleClick()
+            {
+                this.$emit('select', this.denuncia);
+            }
+        }
 };
 </script>
 
 <style scoped>
-  .denuncia-card {
-  --surface: rgba(16, 22, 32, 0.96);
-  --surface-soft: rgba(255, 255, 255, 0.045);
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #f4f7fb;
-  --text-muted: #a8b2c3;
-  --text-faint: #7f8998;
-  --accent: #f4d000;
-  --accent-soft: rgba(244, 208, 0, 0.16);
-  --success: #51cf88;
-  --success-soft: rgba(81, 207, 136, 0.14);
-  --warning: #ffbc52;
-  --warning-soft: rgba(255, 188, 82, 0.14);
-  --danger: #ff7d7d;
-  --danger-soft: rgba(255, 125, 125, 0.15);
-  position: relative;
-  display: grid;
-  gap: 16px;
-  padding: 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
-  overflow: hidden;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-  cursor: pointer;
+.denuncia-card-wrapper
+{
+    position: relative;
+    padding-top: 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.denuncia-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(244, 208, 0, 0.22);
-  background: rgba(21, 28, 40, 0.98);
+.denuncia-card-wrapper:hover
+{
+    transform: translateY(-4px) scale(1.02);
+}
+
+.denuncia-card-wrapper:hover .denuncia-card,
+.denuncia-card-wrapper:hover .folder-tab
+{
+    border-color: #2b3a5c;
+}
+
+.denuncia-card-wrapper:hover .denuncia-card
+{
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+.folder-tab
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 16px;
+    background: #181821;
+    border: 1px solid #1b253b;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    z-index: 3;
+    transition: border-color 0.25s ease;
+}
+
+.folder-tab::after
+{
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #181821;
+}
+
+.denuncia-card
+{
+    position: relative;
+    z-index: 2;
+    background: #181821;
+    border: 1px solid #1b253b;
+    border-radius: 0 12px 12px 12px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-top
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge
+{
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge--neutral
+{
+    background: rgba(168, 151, 255, 0.10);
+    color: #a897ff;
+}
+
+.badge--success
+{
+    background: rgba(217, 214, 194, 0.08);
+    color: #d9d6c2;
+}
+
+.badge--warning
+{
+    background: rgba(243, 223, 19, 0.08);
+    color: #f3df13;
+}
+
+.badge--alert
+{
+    background: rgba(255, 109, 0, 0.10);
+    color: #FF6D00;
+}
+
+.badge--danger
+{
+    background: rgba(255, 102, 113, 0.08);
+    color: #ff6671;
+}
+
+.card-date
+{
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 700;
+}
+
+.card-content
+{
+    flex-grow: 1;
+}
+
+.card-text
+{
+    margin: 0;
+    font-size: 0.95rem;
+    color: #c8c8d1;
+    line-height: 1.5;
 }
 </style>
-

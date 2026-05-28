@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/TableList.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/forms/FormDenuncia.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/LogoPeralta.png" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/LogoPeralta.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/hero.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/vite.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/vue.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" afterDir="false" />
-    </list>
+    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Backend Update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,12 +28,12 @@
     &quot;assignee&quot;: &quot;ordepgoulart&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ordepgoulart/Peralta.git&quot;,
-    &quot;accountId&quot;: &quot;48565859-4b42-4e5e-a388-d9dbf8af751e&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ordepgoulart/Peralta.git",
+    "accountId": "ef193842-684c-492d-8b16-c1c979299c9d"
   }
-}</component>
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -137,7 +127,7 @@
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Peralta",
+    "last_opened_file_path": "/home/mrs/WebstormProjects/Peralta/frontend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -161,7 +151,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.24374.125" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
       </set>
     </attachedChunks>
   </component>
@@ -174,6 +164,7 @@
       <updated>1777040228222</updated>
       <workItem from="1777383574157" duration="49000" />
       <workItem from="1779803495234" duration="4302000" />
+      <workItem from="1779932383988" duration="77000" />
     </task>
     <servers />
   </component>

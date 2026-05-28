@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="fotos")
-public class Foto {
-
+public class Foto
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="foto_id")
@@ -18,46 +18,56 @@ public class Foto {
     @Column(name="foto_arq")
     private String arquivo;
 
-    public Foto(Long id, Denuncia denuncia, String arquivo) {
+    public Foto(Long id, Denuncia denuncia, String arquivo)
+    {
         this.id = id;
         this.denuncia = denuncia;
         this.arquivo = arquivo;
     }
 
-    public Foto(String arquivo) {
-        this(0l,null,arquivo);
+    public Foto(String arquivo)
+    {
+        this(0L, null, arquivo);
     }
 
-    public Foto(Denuncia denuncia, String arquivo) {
-        this(0L,denuncia, arquivo);
+    public Foto(Denuncia denuncia, String arquivo)
+    {
+        this(0L, denuncia, arquivo);
     }
 
-    public Foto() {
-        this(0L,null,"");
+    public Foto()
+    {
+        this(0L, null, "");
     }
 
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
     }
 
-    public void setDenuncia(Denuncia denuncia) {
+    public void setDenuncia(Denuncia denuncia)
+    {
         this.denuncia = denuncia;
     }
 
-    public String getArquivo() {
+    public String getArquivo()
+    {
         return arquivo;
     }
 
-    public void setArquivo(String arquivo) {
+    public void setArquivo(String arquivo)
+    {
         this.arquivo = arquivo;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Foto{" +
                 "id=" + id +
                 ", arquivo='" + arquivo + '\'' +
