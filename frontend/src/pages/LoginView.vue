@@ -53,7 +53,7 @@
                   })
                   .catch((err) => {
                     console.log(err);
-                    this.$toast.error(err.body.data);
+                    this.$toast.error(err.response.data);
                   });
           }
           //

@@ -381,6 +381,7 @@ export default
                 catch (error)
                 {
                     this.$toast.error("Erro ao salvar o feedback.");
+                    this.$toast.error(error.response.data);
                 }
             },
 

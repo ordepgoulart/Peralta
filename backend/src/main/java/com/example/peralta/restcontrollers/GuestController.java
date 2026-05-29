@@ -59,7 +59,7 @@ public class GuestController {
             Usuario usuario = usuarioService.findByKeyAccess(email);
             Usuario usuario2 = usuarioService.findByKeyAccess(cpf);
             if(usuario != null || usuario2 != null)
-                return ResponseEntity.badRequest().body("Já existe um usuário cadastrado com " + (usuario == null ? "esse EMAIL" : "esse CPF"));
+                return ResponseEntity.badRequest().body("Já existe um usuário cadastrado com " + (usuario != null ? "esse EMAIL" : "esse CPF"));
             else
             {
                 Usuario newUsuario = new Usuario(cpf, email, 2, senha);
