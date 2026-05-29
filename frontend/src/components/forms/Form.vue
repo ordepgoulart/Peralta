@@ -100,7 +100,10 @@ export default
                 {
                     type: Array,
                     default: () => []
-                }
+                },
+            initialData: {
+              type: Object,  default: null
+            }
         },
     emits:
         [
@@ -135,11 +138,11 @@ export default
                     {
                         if (field.type === 'file')
                         {
-                            data[field.name] = [];
+                            data[field.name] = this.initialData?.[field.name] ?? [];
                         }
                         else
                         {
-                            data[field.name] = "";
+                            data[field.name] = this.initialData?.[field.name] ?? "";
                         }
                     });
                 });

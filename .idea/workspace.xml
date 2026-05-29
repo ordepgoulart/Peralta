@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada." />
+    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/forms/Form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/forms/Form.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peraltadb.sql" beforeDir="false" afterPath="$PROJECT_DIR$/peraltadb.sql" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +138,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/opt/webstorm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "C:\\Users\\Pedro\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
