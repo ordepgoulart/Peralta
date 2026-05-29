@@ -41,6 +41,9 @@ public class Denuncia
     @JoinColumn(name = "tip_id")
     private Tipo tipo;
 
+    @OneToOne(mappedBy = "denuncia", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Feedback feedback;
+
     public Denuncia(Long id, String titulo, String texto, int urgencia, LocalDate data, List<Foto> fotos, Orgao orgao, Usuario usuario, Tipo tipo)
     {
         this.id = id;
@@ -177,6 +180,16 @@ public class Denuncia
     public void setTipo(Tipo tipo)
     {
         this.tipo = tipo;
+    }
+
+    public Feedback getFeedback()
+    {
+        return feedback;
+    }
+
+    public void setFeedback(Feedback feedback)
+    {
+        this.feedback = feedback;
     }
 
     @Override

@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada.">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DenunciaCardAdmin.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminViewOrgao.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdminViewTipos.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/peralta/restcontrollers/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DenunciaCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DenunciaCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DetalhesDenunciaModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DetalhesDenunciaModal.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/AdminView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AdminView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LoginView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/UserView.vue" afterDir="false" />
-    </list>
+    <list default="true" id="cf11ae97-d49f-43fe-bbe6-e8f04e44bddf" name="Changes" comment="Adições/Problemas:&#10;&#10;   * Modificação no DenunciaCard.&#10;   * Modal: Detalhes Denuncia.&#10;   * Modal: Formulário Denuncia.&#10;&#10;   - Denuncia não esta sendo cadastrada." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -140,14 +127,14 @@
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Peralta/frontend/src/pages",
+    "last_opened_file_path": "/home/mrs/WebstormProjects/Peralta/frontend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "C:\\Users\\Pedro\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "/opt/webstorm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {

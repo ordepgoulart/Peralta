@@ -3,9 +3,14 @@
         <div class="folder-tab"></div>
         <article class="denuncia-card">
             <div class="card-top">
-                <span class="badge" :class="urgenciaClass">
-                    {{ urgenciaLabel }}
-                </span>
+                <div class="badges-group">
+                    <span class="badge" :class="urgenciaClass">
+                        {{ urgenciaLabel }}
+                    </span>
+                    <span v-if="denuncia.feedback" class="badge badge--feedback">
+                        Respondido
+                    </span>
+                </div>
                 <span class="card-date">
                     {{ formattedDate }}
                 </span>
@@ -14,7 +19,6 @@
                 <p class="card-text">
                     {{ truncatedText }}
                 </p>
-
             </div>
         </article>
     </div>
@@ -23,7 +27,7 @@
 <script>
 export default
 {
-    name: 'DenunciaCardAdmin',
+    name: 'DenunciaCard',
     props:
         {
             denuncia:
@@ -44,14 +48,11 @@ export default
                 {
                     return 'Data não informada';
                 }
-
                 const data = new Date(this.denuncia.data);
-
                 if (Number.isNaN(data.getTime()))
                 {
                     return this.denuncia.data;
                 }
-
                 return data.toLocaleDateString('pt-BR');
             },
             urgenciaLabel()
@@ -64,7 +65,6 @@ export default
                         4: 'Muito Alta',
                         5: 'Crítica'
                     };
-
                 return mapa[this.denuncia?.urgencia] || 'Sem urgência';
             },
             urgenciaClass()
@@ -77,18 +77,15 @@ export default
                         4: 'badge--alert',
                         5: 'badge--danger'
                     };
-
                 return mapa[this.denuncia?.urgencia] || 'badge--neutral';
             },
             truncatedText()
             {
                 const texto = this.denuncia?.texto || 'Sem descrição informada.';
-
                 if (texto.length > 90)
                 {
                     return texto.substring(0, 90) + '...';
                 }
-
                 return texto;
             }
         },
@@ -179,6 +176,13 @@ export default
     align-items: center;
 }
 
+.badges-group
+{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
 .badge
 {
     padding: 6px 10px;
@@ -217,6 +221,12 @@ export default
 {
     background: rgba(255, 102, 113, 0.08);
     color: #ff6671;
+}
+
+.badge--feedback
+{
+    background: rgba(99, 179, 237, 0.10);
+    color: #63b3ed;
 }
 
 .card-date

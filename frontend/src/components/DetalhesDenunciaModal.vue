@@ -24,10 +24,10 @@
                         <span class="info-label">Tipo</span>
                         <strong>{{ denuncia?.tipo?.nome || 'Não informado' }}</strong>
                     </div>
-                  <div class="info-item" v-if="adminPage">
-                    <span class="info-label">Usuário</span>
-                    <strong>{{ denuncia?.usuario?.cpf || 'Não informado' }}</strong>
-                  </div>
+                    <div class="info-item" v-if="adminPage">
+                        <span class="info-label">Usuário</span>
+                        <strong>{{ denuncia?.usuario?.cpf || 'Não informado' }}</strong>
+                    </div>
                 </div>
                 <div class="content-block">
                     <span class="info-label">Descrição Detalhada</span>
@@ -39,12 +39,11 @@
                         <img v-for="(foto, index) in denuncia.fotos" :key="index" :src="getFotoUrl(foto)" class="gallery-img" />
                     </div>
                 </div>
-                <div v-if="feedback" class="feedback-block">
+                <div v-if="feedback || denuncia?.feedback" class="feedback-block">
                     <div class="feedback-header">
                         <span class="info-label">Feedback do Órgão</span>
-                        <span class="feedback-date">{{ feedback.dataResposta || feedback.data }}</span>
                     </div>
-                    <p class="feedback-text">{{ feedback.mensagem || feedback.resposta }}</p>
+                    <p class="feedback-text">{{ feedback?.texto || denuncia?.feedback?.texto }}</p>
                 </div>
             </div>
         </section>
@@ -57,10 +56,11 @@ export default
     name: "DetalhesDenunciaModal",
     props:
         {
-            adminPage: {
-              type: Boolean,
-              default: false
-            },
+            adminPage:
+                {
+                    type: Boolean,
+                    default: false
+                },
             show:
                 {
                     type: Boolean,
@@ -94,14 +94,11 @@ export default
                 {
                     return 'Data não informada';
                 }
-
                 const data = new Date(this.denuncia.data);
-
                 if (Number.isNaN(data.getTime()))
                 {
                     return this.denuncia.data;
                 }
-
                 return data.toLocaleDateString('pt-BR');
             },
             hasFotos()
@@ -118,12 +115,10 @@ export default
             getFotoUrl(foto)
             {
                 const arquivo = foto?.arquivo || foto?.nome || foto?.url || '';
-
                 if (arquivo.startsWith('http://') || arquivo.startsWith('https://'))
                 {
                     return arquivo;
                 }
-
                 return `${this.imageBaseUrl}${arquivo}`;
             }
         }

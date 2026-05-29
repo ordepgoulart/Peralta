@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FeedbackRepository extends JpaRepository<Feedback,Long> {
-
+public interface FeedbackRepository extends JpaRepository<Feedback, Long>
+{
     @Query(value = "SELECT * FROM feedbacks WHERE den_id = :id", nativeQuery = true)
     public Feedback findByReportId(@Param("id") Long id);
 }
